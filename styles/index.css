@@ -13,7 +13,7 @@
 
 body {
     position: relative;
-    background: black;
+    background: #121212;
     font-family: 'Poppins', sans-serif;
     width: 100%;
     min-height: 100vh;
@@ -31,4 +31,30 @@ header {
   padding: 20px 100px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   z-index: 20;
+}
+
+.logo img {
+  max-width: 120px;
+
+}
+
+.menu {
+  color: #ffffff;
+  font-size: 2em;
+}
+
+.nav {
+  display: flex;
+
+}
+
+.nav li a {
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 300;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 10
 }

@@ -13,7 +13,8 @@
 
 body {
     position: relative;
-    background: #121212;
+    background-image: url("../views/images/bg.png");
+    background-position: center;
     font-family: 'Poppins', sans-serif;
     width: 100%;
     min-height: 100vh;
@@ -28,7 +29,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 100px;
+  padding: 10px 100px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   z-index: 20;
 }
@@ -107,4 +108,70 @@ header {
   transform: translateY(-50%);
   right: 10px;
   color: #F28C28;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.landing-page {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.ratings, .game {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    color: #ffffff;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ratings:hover, .game:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 30px rgba(242, 140, 40, 0.3);
+}
+
+.ratings .score {
+    font-size: 3em;
+    font-weight: bold;
+    color: var(--primary);
+    margin-right: 20px;
+    min-width: 80px;
+    text-shadow: 0 0 10px rgba(242, 140, 40, 0.5);
+}
+
+.game ion-icon {
+    font-size: 3em;
+    color: var(--primary);
+    margin-right: 20px;
+    min-width: 80px;
+}
+
+.content .subtitle {
+    display: block;
+    font-size: 0.9em;
+    color: var(--primary);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.content h4 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.content span:last-child {
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.8);
 }

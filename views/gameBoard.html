@@ -52,57 +52,14 @@ background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1
   </style>
 </head>
 <body>
-
   <div class="grille">
-    <!-- 42 cellules pour 6 lignes x 7 colonnes -->
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
+      {{range $colIndex, $col := .Columns}}
+          <div class="colonne">
+              {{range $row := $col}}
+                  <div class="cellule"></div>
+              {{end}}
+          </div>
+      {{end}}
   </div>
-
 </body>
 </html>

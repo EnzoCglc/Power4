@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spookie 4</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #ad1d1d;
+background: #e0e000;
+background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1) 57%, rgba(13, 12, 12, 1) 100%);
+      font-family: Arial, sans-serif;
+    }
+
+    .grille {
+      display: grid;
+      grid-template-columns: repeat(7, 60px);
+      grid-template-rows: repeat(6, 60px);
+      gap: 5px;
+      background-color: #ff0000;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .cellule {
+      width: 60px;
+      height: 60px;
+      background-color: #caf0f8;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .cellule:hover {
+      transform: scale(1.1);
+    }
+
+    .rouge {
+      background-color: red;
+    }
+
+    .jaune {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grille">
+    <!-- 42 cellules pour 6 lignes x 7 colonnes -->
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+    <div class="cellule"></div>
+  </div>
+
+</body>
+</html>

@@ -13,7 +13,7 @@
 
 body {
     position: relative;
-    background-image: url("../views/images/bg.png");
+    background-image: url("/assets/images/bg.png");
     background-position: center;
     font-family: 'Poppins', sans-serif;
     width: 100%;

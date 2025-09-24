@@ -5,7 +5,10 @@ body {
       height: 100vh;
       background: #ad1d1d;
       /* background: #e0e000; */
-      background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1) 57%, rgba(13, 12, 12, 1) 100%);
+      background-image: url("/assets/images/bg-game.png");
+      background-position: center;
+      background-size: contain;
+      background-size: cover;
       font-family: Arial, sans-serif;
     }
 

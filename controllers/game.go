@@ -3,32 +3,39 @@ package controllers
 import (
 	"log"
 	"net/http"
+	m "power4/models"
+	"strconv"
 )
 
-// Create 2D matrix to represents the game board
-type GridPage struct {
-	Columns [][]int
-}
-
 func SwitchPlay(w http.ResponseWriter, r *http.Request) {
-	//create 7 columns
-	cols := make([][]int, 7)
-	for i := 0; i < 7; i++ {
-		cols[i] = make([]int, 6) // create 6 case empty
-	}
-	if r.Method == "POST" {
-		// Detect start game
-		name := r.FormValue("play")
-		log.Println(name)
-		//Detect clic in column
-		col := r.FormValue("col")
-		play(col)
+	action := r.FormValue("play")
+	log.Println(action)
 
-		data := GridPage{Columns: cols}
-		render(w, "gameBoard.html", data)
+	colStr := r.FormValue("col")
+	if colStr != "" {
+		col, err := strconv.Atoi(colStr)
+		if err != nil {
+			log.Printf("invalid column %q: %v", colStr, err)
+		} else {
+			play(m.CurrentGame, col)
+		}
 	}
+	render(w, "gameBoard.html", m.CurrentGame)
 }
 
-func play(col string) {
-	log.Println("col", col, "has clicked")
+func play(game *m.GridPage, col int) {
+	player := game.CurrenctTurn
+
+	for row := m.Rows - 1; row >= 0; row-- {
+		if game.Columns[col][row] == m.Empty {
+			game.Columns[col][row] = player
+			log.Println("Value de la grille " , game.Columns)
+			if player == m.P1 {
+				game.CurrenctTurn = m.P2
+			} else {
+				game.CurrenctTurn = m.P1
+			}
+			return
+		}
+	}
 }

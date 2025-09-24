@@ -11,8 +11,8 @@
       align-items: center;
       height: 100vh;
       background: #ad1d1d;
-background: #e0e000;
-background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1) 57%, rgba(13, 12, 12, 1) 100%);
+      /* background: #e0e000; */
+      background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1) 57%, rgba(13, 12, 12, 1) 100%);
       font-family: Arial, sans-serif;
     }
 
@@ -42,12 +42,12 @@ background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1
       transform: scale(1.1);
     }
 
-    .rouge {
-      background-color: red;
+    .black {
+      background-color: black;
     }
 
-    .jaune {
-      background-color: yellow;
+    .orange {
+      background-color: orange;
     }
   </style>
 </head>
@@ -58,7 +58,7 @@ background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1
               <input type="hidden" name="col" value="{{$i}}">
               <div class="colonne" onclick="this.parentElement.submit()">
                   {{range $rowIdx , $cell := $col}}
-                      <div class="cellule {{if eq $cell 1}}rouge{{else if eq $cell 2}}jaune {{end}}"></div>
+                      <div class="cellule {{if eq $cell 1}}black{{else if eq $cell 2}}orange{{end}}"></div>
                   {{end}}
               </div>
           </form>

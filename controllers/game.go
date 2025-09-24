@@ -29,13 +29,49 @@ func play(game *m.GridPage, col int) {
 	for row := m.Rows - 1; row >= 0; row-- {
 		if game.Columns[col][row] == m.Empty {
 			game.Columns[col][row] = player
-			log.Println("Value de la grille " , game.Columns)
-			if player == m.P1 {
-				game.CurrenctTurn = m.P2
+			if verifWin(game.Columns, player, col, row) {
+				log.Printf("Player %d win", player)
+				return
 			} else {
-				game.CurrenctTurn = m.P1
+				if player == m.P1 {
+					game.CurrenctTurn = m.P2
+				} else {
+					game.CurrenctTurn = m.P1
+				}
+				return
 			}
-			return
 		}
 	}
+}
+
+func verifWin(cols [][]int, player int, col int, row int) bool {
+	grid := [][2]int{
+		{1, 0},  // horizontal
+		{0, 1},  // vertical
+		{1, 1},  // diagonal \
+		{1, -1}, //diagonal /
+	}
+
+	for _, g := range grid {
+		count := 1
+		count += countDirection(cols, player, col, row, g[0], g[1])
+		count += countDirection(cols, player, col, row, -g[0], -g[1])
+
+		if count >= 4 {
+			return true
+		}
+	}
+	return false
+}
+
+func countDirection(cols [][]int, player int, col int, row int, dc int, dr int) int {
+	c := col + dc
+	r := row + dr
+	count := 0
+	for c >= 0 && c < m.Cols && r >= 0 && r < m.Rows && cols[c][r] == player {
+		count += 1
+		c += dc
+		r += dr
+	}
+	return count
 }

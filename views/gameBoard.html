@@ -21,7 +21,7 @@ background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1
       grid-template-columns: repeat(7, 60px);
       grid-template-rows: repeat(6, 60px);
       gap: 5px;
-      background-color: #ff0000;
+      background-color: #727171;
       padding: 10px;
       border-radius: 10px;
     }
@@ -57,8 +57,8 @@ background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1
           <form method="post" action="/game">
               <input type="hidden" name="col" value="{{$i}}">
               <div class="colonne" onclick="this.parentElement.submit()">
-                  {{range $row := $col}}
-                      <div class="cellule"></div>
+                  {{range $rowIdx , $cell := $col}}
+                      <div class="cellule {{if eq $cell 1}}rouge{{else if eq $cell 2}}jaune {{end}}"></div>
                   {{end}}
               </div>
           </form>

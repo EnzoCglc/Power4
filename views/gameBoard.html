@@ -3,55 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/css/gameBoard.css">
   <title>Spookie 4</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #ad1d1d;
-      /* background: #e0e000; */
-      background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1) 57%, rgba(13, 12, 12, 1) 100%);
-      font-family: Arial, sans-serif;
-    }
-
-    .grille {
-      display: grid;
-      grid-template-columns: repeat(7, 60px);
-      grid-template-rows: repeat(6, 60px);
-      gap: 5px;
-      background-color: #727171;
-      padding: 10px;
-      border-radius: 10px;
-    }
-
-    .cellule {
-      width: 60px;
-      height: 60px;
-      background-color: #caf0f8;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: transform 0.1s;
-    }
-
-    .cellule:hover {
-      transform: scale(1.1);
-    }
-
-    .black {
-      background-color: black;
-    }
-
-    .orange {
-      background-color: orange;
-    }
-  </style>
 </head>
 <body>
+  <section class="play-button">
+    <form action="/game" method="post">
+    <input type="hidden" name="play" value="startGame">
+    <button class="button-with-icon" type="submit" >
+      <svg
+        class="icon"
+        id="Play"
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          class="color000000 svgShape"
+          fill="#ffffff"
+          d="M12 39c-.549 0-1.095-.15-1.578-.447A3.008 3.008 0 0 1 9 36V12c0-1.041.54-2.007 1.422-2.553a3.014 3.014 0 0 1 2.919-.132l24 12a3.003 3.003 0 0 1 0 5.37l-24 12c-.42.21-.885.315-1.341.315z"
+        ></path>
+      </svg>
+      <span class="text">Play</span>
+    </button>
+    </form>
+    </section>
   <div class="grille">
       {{range $i, $col := .Columns}}
           <form method="post" action="/game">

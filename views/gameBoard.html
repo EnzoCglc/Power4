@@ -11,8 +11,8 @@
       align-items: center;
       height: 100vh;
       background: #ad1d1d;
-background: #e0e000;
-background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1) 57%, rgba(13, 12, 12, 1) 100%);
+      /* background: #e0e000; */
+      background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1) 57%, rgba(13, 12, 12, 1) 100%);
       font-family: Arial, sans-serif;
     }
 
@@ -21,7 +21,7 @@ background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1
       grid-template-columns: repeat(7, 60px);
       grid-template-rows: repeat(6, 60px);
       gap: 5px;
-      background-color: #ff0000;
+      background-color: #727171;
       padding: 10px;
       border-radius: 10px;
     }
@@ -42,67 +42,27 @@ background: radial-gradient(circle, rgba(224, 224, 0, 1) 0%, rgba(255, 128, 0, 1
       transform: scale(1.1);
     }
 
-    .rouge {
-      background-color: red;
+    .black {
+      background-color: black;
     }
 
-    .jaune {
-      background-color: yellow;
+    .orange {
+      background-color: orange;
     }
   </style>
 </head>
 <body>
-
   <div class="grille">
-    <!-- 42 cellules pour 6 lignes x 7 colonnes -->
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
-    <div class="cellule"></div>
+      {{range $i, $col := .Columns}}
+          <form method="post" action="/game">
+              <input type="hidden" name="col" value="{{$i}}">
+              <div class="colonne" onclick="this.parentElement.submit()">
+                  {{range $rowIdx , $cell := $col}}
+                      <div class="cellule {{if eq $cell 1}}black{{else if eq $cell 2}}orange{{end}}"></div>
+                  {{end}}
+              </div>
+          </form>
+      {{end}}
   </div>
-
 </body>
 </html>

@@ -2,7 +2,7 @@ body {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      height: 95vh;
       background: #ad1d1d;
       /* background: #e0e000; */
       background-image: url("/assets/images/bg-game.png");

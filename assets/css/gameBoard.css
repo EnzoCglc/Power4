@@ -39,11 +39,19 @@ body {
 }
 
 .black {
-    background-color: black;
+    background-image: url("/assets/images/reaper_token.png");
+    background-color: transparent;
+    background-position: center;
+    background-size: 120%;
+    background-repeat: no-repeat;
 }
 
 .orange {
-    background-color: #F28C28;
+    background-image: url("/assets/images/token_pumkin.png");
+    background-color: transparent;
+    background-position: center;
+    background-size: 120%;
+    background-repeat: no-repeat;
 }
 
     /* Found Button on UIVERSE */ 

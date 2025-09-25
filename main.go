@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", home)
+	http.HandleFunc("/", gameBoard)
 
 	log.Print("Listening on localhost:8080...")
 	err := http.ListenAndServe(":8080", nil)
@@ -19,6 +19,10 @@ func main() {
 
 func home(w http.ResponseWriter, r *http.Request) {
 	render(w, "index.html", nil)
+}
+
+func gameBoard(w http.ResponseWriter, r *http.Request) {
+	render(w, "gameBoard.html", nil)
 }
 
 func render(w http.ResponseWriter, filename string, data interface{}) {

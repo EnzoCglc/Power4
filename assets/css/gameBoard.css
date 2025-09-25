@@ -38,6 +38,20 @@ body {
     transform: scale(1.1);
 }
 
+.border {
+    background-position: center;
+    height: fit-content;
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: calc(30% + 50px);
+    height: calc(30% + 50px);
+    pointer-events: none;
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 .black {
     background-image: url("/assets/images/reaper_token.png");
     background-color: transparent;

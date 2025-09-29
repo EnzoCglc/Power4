@@ -8,8 +8,14 @@ import (
 )
 
 func SwitchPlay(w http.ResponseWriter, r *http.Request) {
-	action := r.FormValue("play")
-	log.Println(action)
+	// action := r.FormValue("play")
+	exit := r.FormValue("exit")
+
+	if exit == "reset" {
+		reset(m.CurrentGame)
+		render(w, "index.html", nil)
+		return
+	}
 
 	colStr := r.FormValue("col")
 	if colStr != "" {
@@ -42,6 +48,13 @@ func play(game *m.GridPage, col int) {
 			}
 		}
 	}
+}
+
+func reset(game *m.GridPage) {
+	for i := 0; i < m.Cols; i++ {
+		game.Columns[i] = make([]int, m.Rows)
+	}
+	game.CurrenctTurn = m.P1
 }
 
 func verifWin(cols [][]int, player int, col int, row int) bool {

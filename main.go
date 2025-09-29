@@ -3,19 +3,12 @@ package main
 import (
 	"log"
 	"net/http"
-	"power4/controllers"
+	"power4/routes"
 )
 
 func main() {
-	// Connect landing Page
-	http.HandleFunc("/", controllers.Home)
-
-	//Connect game function
-	http.HandleFunc("/game", controllers.SwitchPlay)
-
-	// Use FileServer to serve static assets like .png or css
-	fs := http.FileServer(http.Dir("./assets"))
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	// Setup routes
+	routes.SetupRoutes()
 
 	// Start Server on localhost:8080
 	log.Print("Listening on localhost:8080...")

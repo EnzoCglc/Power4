@@ -3,8 +3,10 @@ package controllers
 import (
 	"log"
 	"net/http"
-	m "power4/models"
+	"power4/models"
+	"power4/utils"
 	"strconv"
+
 )
 
 func SwitchPlay(w http.ResponseWriter, r *http.Request) {
@@ -12,8 +14,8 @@ func SwitchPlay(w http.ResponseWriter, r *http.Request) {
 	exit := r.FormValue("exit")
 
 	if exit == "reset" {
-		reset(m.CurrentGame)
-		render(w, "index.html", nil)
+		reset(models.CurrentGame)
+		utils.Render(w, "index.html", nil)
 		return
 	}
 
@@ -23,26 +25,26 @@ func SwitchPlay(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("invalid column %q: %v", colStr, err)
 		} else {
-			play(m.CurrentGame, col)
+			play(models.CurrentGame, col)
 		}
 	}
-	render(w, "gameBoard.html", m.CurrentGame)
+	utils.Render(w, "gameBoard.html", models.CurrentGame)
 }
 
-func play(game *m.GridPage, col int) {
+func play(game *models.GridPage, col int) {
 	player := game.CurrenctTurn
 
-	for row := m.Rows - 1; row >= 0; row-- {
-		if game.Columns[col][row] == m.Empty {
+	for row := models.Rows - 1; row >= 0; row-- {
+		if game.Columns[col][row] == models.Empty {
 			game.Columns[col][row] = player
 			if verifWin(game.Columns, player, col, row) {
 				log.Printf("Player %d win", player)
 				return
 			} else {
-				if player == m.P1 {
-					game.CurrenctTurn = m.P2
+				if player == models.P1 {
+					game.CurrenctTurn = models.P2
 				} else {
-					game.CurrenctTurn = m.P1
+					game.CurrenctTurn = models.P1
 				}
 				return
 			}
@@ -50,11 +52,11 @@ func play(game *m.GridPage, col int) {
 	}
 }
 
-func reset(game *m.GridPage) {
-	for i := 0; i < m.Cols; i++ {
-		game.Columns[i] = make([]int, m.Rows)
+func reset(game *models.GridPage) {
+	for i := 0; i < models.Cols; i++ {
+		game.Columns[i] = make([]int, models.Rows)
 	}
-	game.CurrenctTurn = m.P1
+	game.CurrenctTurn = models.P1
 }
 
 func verifWin(cols [][]int, player int, col int, row int) bool {
@@ -81,7 +83,7 @@ func countDirection(cols [][]int, player int, col int, row int, dc int, dr int) 
 	c := col + dc
 	r := row + dr
 	count := 0
-	for c >= 0 && c < m.Cols && r >= 0 && r < m.Rows && cols[c][r] == player {
+	for c >= 0 && c < models.Cols && r >= 0 && r < models.Rows && cols[c][r] == player {
 		count += 1
 		c += dc
 		r += dr

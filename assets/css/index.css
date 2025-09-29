@@ -244,8 +244,9 @@ header {
 .button-with-icon:hover .text {
   transform: translateX(200px);
 }
+
 .button-with-icon:hover .icon {
-  transform: translate(23px);
+  transform: translate(300px);
 }
 
 .text {

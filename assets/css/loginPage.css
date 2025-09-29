@@ -31,6 +31,8 @@ body {
 }
 
 .box h2 {
+    font-family: 'Metal Mania', sans-serif;
+    letter-spacing: 2px;
     margin-bottom: 40px;
 }
 
@@ -74,6 +76,7 @@ body {
     width: 100%;
     padding: 20px;
     margin-top: 10px;
+    font-size: 16px;
     background: #ffffff33;
     color: #fff;
     border: none;
@@ -87,11 +90,13 @@ body {
 }
 
 .signup-text {
+    font-family: 'Metal Mania', sans-serif;
     margin-top: 15px;
     font-size: 16px;
 }
 
 .signup-text a {
+    font-family: 'Metal Mania', sans-serif;
     color: #F28C28;
     text-decoration: underline;
 }

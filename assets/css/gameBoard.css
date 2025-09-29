@@ -17,9 +17,23 @@ body {
     grid-template-columns: repeat(7, 60px);
     grid-template-rows: repeat(6, 60px);
     gap: 5px;
-    background-color: #727171;
+    background-color: black;
     padding: 10px;
     border-radius: 10px;
+    position: relative; /* important pour le ::before */
+}
+
+.grille::before {
+    content: "";
+    position: absolute;
+    top: -220px;   /* marge à ajuster */
+    left: -200px;
+    right: -200px;
+    bottom: -100px;
+    background: url("/assets/images/border.png") no-repeat center/100% 100%;
+    pointer-events: none; /* pour ne pas bloquer les clics */
+    z-index: 2;  /* au-dessus du fond, derrière les pions */
+    border-radius: 15px; /* si ton cadre est arrondi */
 }
 
 .cellule {

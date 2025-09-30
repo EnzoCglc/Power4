@@ -73,12 +73,12 @@ body {
 
 .exit-button {
     position: absolute;
-    top: 35px;
-    left: 35px;
+    top: 420px;
+    left: 30px;
     z-index: 10; /* Ensure it stays on top */
 }
 
-button {
+.button-with-icon {
  display: flex;
  height: 3em;
  width: 200px;
@@ -93,19 +93,58 @@ button {
  background: #F28C28;
 }
 
-button > svg {
+.button-with-icon > svg {
  margin-right: 5px;
  margin-left: 5px;
  font-size: 20px;
  transition: all 0.4s ease-in;
 }
 
-button:hover > svg {
+.button-with-icon:hover > svg {
  font-size: 1.2em;
  transform: translateX(-5px);
 }
 
-button:hover {
+.button-with-icon:hover {
+ box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
+ transform: translateY(-2px);
+}
+
+.reset-button {
+    position: absolute;
+    top: 420px;
+    left: 250px;
+    z-index: 10; /* Ensure it stays on top */
+}
+
+.button-reset {
+ display: flex;
+ height: 3em;
+ width: 200px;
+ align-items: center;
+ justify-content: center;
+ background-color: #F28C28;
+ border-radius: 3px;
+ letter-spacing: 1px;
+ transition: all 0.2s linear;
+ cursor: pointer;
+ border: none;
+ background: #F28C28;
+}
+
+.button-reset > svg {
+ margin-right: 5px;
+ margin-left: 5px;
+ font-size: 20px;
+ transition: all 0.4s ease-in;
+}
+
+.button-reset:hover > svg {
+ font-size: 1.2em;
+ transform: translateX(-5px);
+}
+
+.button-reset:hover {
  box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
  transform: translateY(-2px);
 }

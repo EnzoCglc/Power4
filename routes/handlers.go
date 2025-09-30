@@ -12,6 +12,9 @@ func SetupRoutes() {
 	//Connect game function
 	http.HandleFunc("/game", controllers.SwitchPlay)
 
+	//Connect LoginPage
+	http.HandleFunc("/login", controllers.LoginPage)
+
 	// Use FileServer to serve static assets like .png or css
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))

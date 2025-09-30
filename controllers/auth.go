@@ -21,26 +21,38 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 	confirm := r.FormValue("confirm_password")
 
 	if password != confirm {
-		log.Println("MDP INCORRECT")
-		utils.Render(w, "registerPage.html", "Password don't match")
+		utils.Render(w, "registerPage.html", "Passwords don't match")
 		return
 	}
-	verifDataBase(w, username)
-	log.Println("Nouveau compte accepté :", username)
-	utils.Render(w, "registerPage.html", nil)
-}
 
-func verifDataBase(w http.ResponseWriter, username string) {
-	db, err := models.LoadDB("database/db.json")
+	exists, err := verifExists(username)
+
 	if err != nil {
 		http.Error(w, "Error to load Database", http.StatusInternalServerError)
 		return
 	}
-	for _, u := range db.User {
+
+	if exists {
+		log.Println("User already use")
+		utils.Render(w, "registerPage.html", nil)
+		return
+	}
+
+	log.Println("Nouveau compte accepté :", username)
+	utils.Render(w, "registerPage.html", nil)
+}
+
+func verifExists(username string) (bool, error) {
+	db, err := models.LoadDB("database/db.json")
+
+	if err != nil {
+		return false, err
+	}
+
+	for _, u := range db.Users {
 		if u.Username == username {
-			log.Println("Username already use : ", username)
-			utils.Render(w, "registerPage.html", "Username already use ")
-			return
+			return true, nil
 		}
 	}
+	return false, nil
 }

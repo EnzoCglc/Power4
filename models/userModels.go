@@ -15,7 +15,7 @@ type User struct {
 }
 
 type DataBase struct {
-	User []User `json:"users"`
+	Users []User `json:"users"`
 }
 
 func LoadDB(path string) (DataBase, error) {

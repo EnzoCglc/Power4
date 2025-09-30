@@ -23,24 +23,25 @@
     <div class="container">
         <div class="box">
             <h2>BOOH ! Are You A New Monster ?</h2>
-            <form>
-                <div class="input-box">
-                    <input type="text" required>
-                    <label>UserName</label>
-                </div>
-                <div class="input-box">
-                    <input type="password" required>
-                    <label>Password</label>
-                </div>
-                <div class="input-box">
-                    <input type="password" required>
-                    <label>Confirm Password</label>
-                </div>
-                <button type="submit" class="btn">SignUp</button>
-                <p class="signup-text">Already Have An Account? 
-                    <a href="/login">Log In</a>
-                </p>
-            </form>
+                <form action="/register" method="post">
+                    <div class="input-box">
+                        <input type="text" name="username" required>
+                        <label>UserName</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="confirm_password" required>
+                        <label>Confirm Password</label>
+                    </div>
+                    <p class="red_message">You Password is not good</p>
+                    <button type="submit" class="btn">SignUp</button>
+                </form>
+            <p class="signup-text">Already Have An Account? 
+                <a href="/login">Log In</a>
+            </p>
         </div>
     </div>
 </body>

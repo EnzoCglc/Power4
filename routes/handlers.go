@@ -17,6 +17,7 @@ func SetupRoutes() {
 
 	//Connect RegisterPage
 	http.HandleFunc("/signup", controllers.RegisterPage)
+	http.HandleFunc("/register", controllers.RegisterInfo)
 
 	// Use FileServer to serve static assets like .png or css
 	fs := http.FileServer(http.Dir("./assets"))

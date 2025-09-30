@@ -5,13 +5,15 @@ import (
 	"net/http"
 	"power4/models"
 	"power4/utils"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func LoginPage(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, "loginPage.html", nil)
 }
 
-func RegisterPage(w http.ResponseWriter, r *http.Request) {
+func RegisauterPage(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, "registerPage.html", nil)
 }
 
@@ -38,8 +40,10 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	createUser(username, password)
+
 	log.Println("Nouveau compte accepté :", username)
-	utils.Render(w, "registerPage.html", nil)
+	utils.Render(w, "loginPage.html", nil)
 }
 
 func verifExists(username string) (bool, error) {
@@ -55,4 +59,29 @@ func verifExists(username string) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func createUser(username, password string) error {
+	db, err := models.LoadDB("database/db.json")
+
+	if err != nil {
+		return err
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return err
+	}
+
+	newUser := models.User{
+		ID:           len(db.Users) + 1,
+		Username:     username,
+		PasswordHash: string(hash),
+		Elo:          1000,
+		Win:          0,
+		Losses:       0,
+	}
+	db.Users = append(db.Users, newUser)
+	return models.SaveDB("database/db.json", db)
 }

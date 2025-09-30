@@ -13,7 +13,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, "loginPage.html", nil)
 }
 
-func RegisauterPage(w http.ResponseWriter, r *http.Request) {
+func RegisterPage(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, "registerPage.html", nil)
 }
 
@@ -84,4 +84,36 @@ func createUser(username, password string) error {
 	}
 	db.Users = append(db.Users, newUser)
 	return models.SaveDB("database/db.json", db)
+}
+
+func LoginInfo(w http.ResponseWriter, r *http.Request) {
+	username := r.FormValue("username")
+	password := r.FormValue("password")
+
+	err := login(username, password)
+
+	if err != nil {
+		http.Error(w, "Error to load Database", http.StatusInternalServerError)
+		return
+	}
+
+	log.Println("Login Succes for :", username)
+	utils.Render(w, "index.html", nil)
+}
+
+func login(username, password string) error {
+	db, err := models.LoadDB("database/db.json")
+
+	if err != nil {
+		return err
+	}
+
+	for _, u := range db.Users {
+		if u.Username == username {
+			storeHash := u.PasswordHash
+
+			return bcrypt.CompareHashAndPassword([]byte(storeHash), []byte(password))
+		}
+	}
+	return err
 }

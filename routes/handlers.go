@@ -13,7 +13,8 @@ func SetupRoutes() {
 	http.HandleFunc("/game", controllers.SwitchPlay)
 
 	//Connect LoginPage
-	http.HandleFunc("/login", controllers.LoginPage)
+	http.HandleFunc("/signin", controllers.LoginPage)
+	http.HandleFunc("/login", controllers.LoginInfo)
 
 	//Connect RegisterPage
 	http.HandleFunc("/signup", controllers.RegisterPage)

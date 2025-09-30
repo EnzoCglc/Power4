@@ -1,0 +1,12 @@
+{
+"users": [
+{
+"id": 1,
+"username": "enzo",
+"password_hash": "$2a$10$EY7JWZV2hnvIjTzA4x7jRuVJN1b/NrbmJ3InNjvxNLeb05pvSewkW",
+"elo": 1000,
+"win": 0,
+"losses": 0
+}
+]
+}

@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #F28C28;
+    --secondary: #b0671e;
+}
+
+body {
+    background: url('/assets/images/bg-gamemode.png') no-repeat center;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Button Section */
+.buttons-section {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.game-button {
+    padding: 1.2em 5.5em;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--primary);
+    background: black;
+    transition: all 1000ms;
+    font-size: 24px;
+    position: relative;
+    overflow: hidden;
+    outline: 2px solid var(--primary);
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+}
+
+.game-button:hover {
+    color: black;
+    transform: scale(1.05);
+    outline: 2px solid var(--secondary);
+    box-shadow: 4px 5px 17px -4px var(--primary);
+}
+
+.game-button::before {
+    content: "";
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary);
+    transform: skewX(45deg);
+    z-index: -1;
+    transition: width 1000ms;
+}
+
+.game-button:hover::before {
+    width: 250%;
+}
+
+/* Level Selection Section */
+.level-selection {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 15px;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 30px rgba(242, 140, 40, 0.3);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    transition: all 0.4s ease;
+}
+
+.level-selection.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.level-selection h2 {
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(242, 140, 40, 0.5);
+}
+
+.levels-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    max-width: 600px;
+}
+
+.level-item {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.level-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+    border: 3px solid var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--primary);
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(242, 140, 40, 0.3),
+                inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.level-item button {
+    cursor: pointer;
+}
+
+.level-item:hover .level-circle {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(242, 140, 40, 0.6),
+                inset 0 0 15px rgba(0, 0, 0, 0.5);
+    border-color: var(--secondary);
+}
+
+.level-circle::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, transparent 40%, var(--primary) 50%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.level-item:hover .level-circle::before {
+    opacity: 0.3;
+}
+
+/* Locked Levels */
+.level-item.locked .level-circle {
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    border-color: #444;
+    color: #444;
+    cursor: not-allowed;
+}
+
+.level-item.locked:hover .level-circle {
+    transform: none;
+    box-shadow: 0 0 15px rgba(68, 68, 68, 0.3);
+    border-color: #444;
+}
+
+.lock-icon {
+    width: 30px;
+    height: 30px;
+    color: #444;
+}
+
+/* Animation */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.level-item:not(.locked):hover {
+    animation: pulse 0.5s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .levels-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Exit Button */
+.exit-button {
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    z-index: 10;
+}
+
+.button-with-icon {
+    display: flex;
+    height: 3em;
+    width: 200px;
+    align-items: center;
+    justify-content: center;
+    background-color: #F28C28;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+    border: none;
+    background: #F28C28;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.button-with-icon > svg {
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 20px;
+    transition: all 0.4s ease-in;
+}
+
+.button-with-icon:hover > svg {
+    font-size: 1.2em;
+    transform: translateX(-5px);
+}
+
+.button-with-icon:hover {
+    box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
+    transform: translateY(-2px);
+}

@@ -6,11 +6,17 @@ import (
 	"power4/models"
 	"power4/utils"
 	"strconv"
-
 )
 
+func GameDuo(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		reset(models.CurrentGame)
+		models.CurrentGame.GameMode = "duo"
+	}
+	utils.Render(w, "gameBoard.html", models.CurrentGame)
+}
+
 func SwitchPlay(w http.ResponseWriter, r *http.Request) {
-	// action := r.FormValue("play")
 	exit := r.FormValue("exit")
 
 	if exit == "reset" {

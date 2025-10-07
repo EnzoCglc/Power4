@@ -12,6 +12,7 @@ const (
 type GridPage struct {
 	Columns      [][]int
 	CurrenctTurn int
+	GameMode     string
 }
 
 var CurrentGame = newGrid()

@@ -31,7 +31,10 @@ func SwitchPlay(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("invalid column %q: %v", colStr, err)
 		} else {
-			play(models.CurrentGame, col)
+			err = play(models.CurrentGame, col)
+			if err != nil {
+				log.Printf("invalid column %q: %v", colStr, err)
+			}
 		}
 	}
 	utils.Render(w, "gameBoard.html", models.CurrentGame)

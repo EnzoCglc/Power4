@@ -9,6 +9,10 @@ func SetupRoutes() {
 	// Connect landing Page
 	http.HandleFunc("/", controllers.Home)
 
+	//Connect Gamemode
+
+	http.HandleFunc("/gamemode", controllers.GameMode)
+
 	//Connect game function
 	http.HandleFunc("/game", controllers.SwitchPlay)
 

@@ -16,6 +16,18 @@
   </button>
   </form>
     </section>
+
+    <div id="win-banner" class="win-banner">
+       <div class="win-banner-content">
+          <h1>YOU WIN!</h1>
+          <form method="post" action="/game">
+            <input type="hidden" name="retry" value="1">
+            <button type="submit" class="retry-button">Retry</button>
+          </form>
+      </div>
+    </div>
+
+
   <div class="grille">
       {{range $i, $col := .Columns}}
           <form method="post" action="/game">

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Metal+Mania&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
 body {
       display: flex;
       justify-content: center;
@@ -108,4 +111,65 @@ button:hover > svg {
 button:hover {
  box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
  transform: translateY(-2px);
+}
+
+/* Banner for the win or lose */
+.win-banner {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 100vw;
+    height: auto;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transform: translateY(-50%);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.win-banner-content {
+    width: 100%;
+    background-color: #282521;
+    border: 5px solid #ffffff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 30px #F28C28, inset 0 0 10px #F28C28;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.win-banner-content h1 {
+    font-size: 4rem;
+    color: #fff;
+    text-shadow: 4px 4px 0 #F28C28, -4px -4px 0 black;
+    margin-bottom: 20px;
+    font-family: 'Metal Mania', sans-serif;
+}
+
+.retry-button {
+    background-color: #F28C28;
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.retry-button:hover {
+    background-color: #ffb84d;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #F28C28;
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0;}
+    to { opacity: 1;}
 }

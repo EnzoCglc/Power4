@@ -13,6 +13,7 @@ type GridPage struct {
 	Columns      [][]int
 	CurrenctTurn int
 	GameMode     string
+	BotLvl		 int
 	Winner       int
 	GameOver     bool
 	IsDraw       bool

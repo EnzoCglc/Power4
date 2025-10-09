@@ -97,8 +97,14 @@ func LoginInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	http.SetCookie(w, &http.Cookie{
+		Name: "username",
+		Value: username,
+		Path: "/",
+	})
+
 	log.Println("Login Succes for :", username)
-	utils.Render(w, "index.html", nil)
+	utils.Render(w, "index.html", username)
 }
 
 func login(username, password string) error {

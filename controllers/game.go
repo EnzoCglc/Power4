@@ -18,6 +18,11 @@ func SwitchPlay(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	cookie, err := r.Cookie("username")
+	if err == nil && cookie.Value != "" {
+		models.CurrentGame.Player1Name = cookie.Value
+	}
+
 	colStr := r.FormValue("col")
 	if colStr != "" {
 		col, err := strconv.Atoi(colStr)

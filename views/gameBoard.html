@@ -10,7 +10,7 @@
   </div>
     <div class="card">
     <div class="card-content">
-      <p class="card-title">Player 1</p>
+      <p class="card-title">{{if .Player1Name}}{{.Player1Name}}{{else}}Player 1{{end}}</p>
       <p class="card-para">Time : 0.30 sec</p>
     </div>
   </div>
@@ -55,8 +55,9 @@
     </div>
     <div class="card">
     <div class="card-content">
-      <p class="card-title">Player 2</p>
-      <p class="card-para">Time : 0.30 sec</p>
+      <p class="card-title">Bot</p>
+      <p class="card-para">Elo: 1000</p>
+      <p class="card-para">Win: 10</p>
     </div>
   </div>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

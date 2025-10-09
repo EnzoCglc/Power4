@@ -13,6 +13,7 @@ type GridPage struct {
 	Columns      [][]int
 	CurrenctTurn int
 	Winner       int
+	Player1Name  string
 }
 
 var CurrentGame = newGrid()

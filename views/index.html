@@ -14,20 +14,20 @@
         <ion-icon name="apps-outline"></ion-icon>
        </a>
        <ul class="nav">
-        <li>
-            <a href="">Play Solo</a>
+        <li>   
+            <a href="/game?play=startGame">Play Solo</a>
         </li>
         <li>
-            <a href="">Play Duo</a>
+            <a href="/">Play Duo</a>
         </li>
         <li>
-            <a href="">Play Ranked</a>
+            <a href="/">Play Ranked</a>
         </li>
        </ul>
-       <div class="search">
+       <!-- <div class="search">
         <input type="text" placeholder="Search">
         <ion-icon name="search-outline"></ion-icon>
-       </div>
+       </div> -->
        <ul class="nav-collapse">
         <li>
             <a href="">Play Solo</a>
@@ -39,6 +39,53 @@
             <a href="">Play Ranked</a>
         </li>
        </ul>
+    {{if .}}
+        <div aria-label="User Login Button"
+            tabindex="0"
+            role="button"
+            class="user-profile"
+        >
+        <div class="user-profile-inner">
+            <svg
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+        >
+        <g data-name="Layer 2" id="Layer_2">
+            <path
+                d="m15.626 11.769a6 6 0 1 0 -7.252 0 9.008 9.008 0 0 0 -5.374 8.231 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 9.008 9.008 0 0 0 -5.374-8.231zm-7.626-4.769a4 4 0 1 1 4 4 4 4 0 0 1 -4-4zm10 14h-12a1 1 0 0 1 -1-1 7 7 0 0 1 14 0 1 1 0 0 1 -1 1z"
+            ></path>
+            </g>
+            </svg>
+        <p>Welcome {{.}}</p>
+    {{else}}
+        <section class="login-button">
+        <form action="/signin" method="post">
+            <input type="hidden" name="login" value="loginPage">
+        <div onclick="this.parentElement.submit()"
+            aria-label="User Login Button"
+            tabindex="0"
+            role="button"
+            class="user-profile"
+        >
+        <div class="user-profile-inner">
+            <svg
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+        >
+        <g data-name="Layer 2" id="Layer_2">
+            <path
+                d="m15.626 11.769a6 6 0 1 0 -7.252 0 9.008 9.008 0 0 0 -5.374 8.231 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 9.008 9.008 0 0 0 -5.374-8.231zm-7.626-4.769a4 4 0 1 1 4 4 4 4 0 0 1 -4-4zm10 14h-12a1 1 0 0 1 -1-1 7 7 0 0 1 14 0 1 1 0 0 1 -1 1z"
+            ></path>
+            </g>
+            </svg>
+        <p>Log In</p>
+    {{end}}
+    </div>
+    </div>
+    </form>
+    </section>
     </header>
         <div class="landing-page">
         <div class="ratings">
@@ -59,7 +106,7 @@
         </div>
     </div>
     <section class="play-button">
-    <form action="/game" method="post">
+    <form action="/gamemode" method="post">
     <input type="hidden" name="play" value="startGame">
     <button class="button-with-icon" type="submit" >
       <svg
@@ -74,7 +121,7 @@
           d="M12 39c-.549 0-1.095-.15-1.578-.447A3.008 3.008 0 0 1 9 36V12c0-1.041.54-2.007 1.422-2.553a3.014 3.014 0 0 1 2.919-.132l24 12a3.003 3.003 0 0 1 0 5.37l-24 12c-.42.21-.885.315-1.341.315z"
         ></path>
       </svg>
-      <span class="text">Play</span>
+      <span class="text">GameMode</span>
     </button>
     </form>
     </section>

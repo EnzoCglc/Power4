@@ -1,0 +1,111 @@
+body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 95vh;
+      background: #ad1d1d;
+      /* background: #e0e000; */
+      background-image: url("/assets/images/bg-game.png");
+      background-position: center;
+      background-size: contain;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+    }
+
+.grille {
+    display: grid;
+    grid-template-columns: repeat(7, 60px);
+    grid-template-rows: repeat(6, 60px);
+    gap: 5px;
+    background-color: black;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative; /* important pour le ::before */
+}
+
+.grille::before {
+    content: "";
+    position: absolute;
+    top: -220px;   /* marge à ajuster */
+    left: -200px;
+    right: -200px;
+    bottom: -100px;
+    background: url("/assets/images/border.png") no-repeat center/100% 100%;
+    pointer-events: none; /* pour ne pas bloquer les clics */
+    z-index: 2;  /* au-dessus du fond, derrière les pions */
+    border-radius: 15px; /* si ton cadre est arrondi */
+}
+
+.cellule {
+    width: 60px;
+    height: 60px;
+    background-color: #caf0f8;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.cellule:hover {
+    transform: scale(1.1);
+}
+
+.black {
+    background-image: url("/assets/images/reaper_token.png");
+    background-color: transparent;
+    background-position: center;
+    background-size: 120%;
+    background-repeat: no-repeat;
+}
+
+.orange {
+    background-image: url("/assets/images/token_pumkin.png");
+    background-color: transparent;
+    background-position: center;
+    background-size: 120%;
+    background-repeat: no-repeat;
+}
+
+    /* Found Button on UIVERSE */ 
+
+
+.exit-button {
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    z-index: 10; /* Ensure it stays on top */
+}
+
+button {
+ display: flex;
+ height: 3em;
+ width: 200px;
+ align-items: center;
+ justify-content: center;
+ background-color: #F28C28;
+ border-radius: 3px;
+ letter-spacing: 1px;
+ transition: all 0.2s linear;
+ cursor: pointer;
+ border: none;
+ background: #F28C28;
+}
+
+button > svg {
+ margin-right: 5px;
+ margin-left: 5px;
+ font-size: 20px;
+ transition: all 0.4s ease-in;
+}
+
+button:hover > svg {
+ font-size: 1.2em;
+ transform: translateX(-5px);
+}
+
+button:hover {
+ box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
+ transform: translateY(-2px);
+}

@@ -148,7 +148,7 @@ body {
  box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
  transform: translateY(-2px);
 }
-/* From Uiverse.io by gharsh11032000 */ 
+
 .card {
   display: flex;
   width: 200px;
@@ -228,4 +228,22 @@ body {
 
 .card:hover:after {
   transform: translateX(100%);
+}
+
+@keyframes dropToken {
+  0% {
+    transform: translateY(-200px);
+    opacity: 0;
+  }
+  80% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.cellule.black, .cellule.orange {
+  animation: dropToken 0.4s ease-in;
 }

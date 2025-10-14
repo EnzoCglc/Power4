@@ -17,15 +17,18 @@
   </form>
     </section>
 
-    <div id="win-banner" class="win-banner">
-       <div class="win-banner-content">
-          <h1>YOU WIN!</h1>
-          <form method="post" action="/game">
+    <div id="win-banner" class="win-banner-overlay active">
+    <div class="win-banner-content">
+        <img src="/assets/images/left-decoration.png" alt="" class="banner-left-image">
+        <img src="/assets/images/right-decoration.png" alt="" class="banner-right-image">
+        
+        <h1>YOU WIN</h1>
+        <form method="post" action="/game">
             <input type="hidden" name="retry" value="1">
             <button type="submit" class="retry-button">Retry</button>
-          </form>
-      </div>
+        </form>
     </div>
+</div>
 
 
   <div class="grille">

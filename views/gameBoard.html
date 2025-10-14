@@ -70,5 +70,13 @@ document.querySelectorAll('.colonne').forEach(col => {
     sound.play();
   });
 });
+
+let turn = 1;
+document.querySelectorAll('.colonne').forEach(col => {
+  col.addEventListener('click', () => {
+    document.getElementById('turnNumber').textContent = ++turn;
+  });
+});
+
 </script>
 </html>

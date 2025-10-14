@@ -261,3 +261,8 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 15px orange;
 }
+
+.colonne:hover .cellule:not(.black):not(.orange):last-child {
+  box-shadow: 0 0 20px 5px orange;
+  transition: box-shadow 0.3s ease;
+}

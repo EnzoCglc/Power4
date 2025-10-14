@@ -7,6 +7,11 @@
   <title>Spookie 4</title>
 </head>
 <body>
+  <div class="scoreboard">
+  <p><span id="player1Name">Player 1</span>: <span id="scoreP1">0</span></p>
+    <p><span id="botName">Bot</span>: <span id="scoreBot">0</span></p>
+    <p>Tour : <span id="turnNumber">1</span></p>
+</div>
   </div>
     <div class="card">
     <div class="card-content">
@@ -55,4 +60,15 @@
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
+<audio id="soundPlay" src="/assets/sounds/drop.mp3" preload="auto"></audio>
+
+<script>
+document.querySelectorAll('.colonne').forEach(col => {
+  col.addEventListener('click', () => {
+    const sound = document.getElementById('soundPlay');
+    sound.currentTime = 0;
+    sound.play();
+  });
+});
+</script>
 </html>

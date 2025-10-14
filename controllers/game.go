@@ -52,7 +52,6 @@ func SwitchPlay(w http.ResponseWriter, r *http.Request) {
 				log.Printf("invalid column %q: %v", colStr, err)
 			}
 
-			// Si c'est le mode solo et que le jeu n'est pas terminé, le bot joue immédiatement
 			if models.CurrentGame.GameMode == "solo" && models.CurrentGame.CurrenctTurn == models.P2 && !models.CurrentGame.GameOver {
 				playBot(models.CurrentGame)
 				log.Println("Bot played")

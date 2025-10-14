@@ -109,3 +109,20 @@ button:hover {
  box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
  transform: translateY(-2px);
 }
+
+.cellule.hoverNextTurn {
+  opacity: 0.6;
+  filter: brightness(1.2);
+  background-position: center;
+  background-size: 120%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+}
+
+.hover-black.hoverNextTurn {
+  background-image: url("/assets/images/reaper_token.png");
+}
+
+.hover-orange.hoverNextTurn {
+  background-image: url("/assets/images/token_pumkin.png");
+}

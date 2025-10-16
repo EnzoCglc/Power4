@@ -1,4 +1,5 @@
 let currentTurn = window.gameState.currentTurn;
+let Finish = false;
 
 document.querySelectorAll('.colonne').forEach(col => {
     col.addEventListener('mouseenter', () => {
@@ -7,13 +8,17 @@ document.querySelectorAll('.colonne').forEach(col => {
                 let nb_cell = col.querySelectorAll('.cellule').length - col.querySelectorAll('.black, .orange').length;
                 let nb_cell_to_highlight = nb_cell -1;
                 let cell_to_hightlight = col.querySelectorAll('.cellule')[nb_cell_to_highlight];
-                if (window.gameState.currentTurn === 1){
-                    console.log('test')
-                    cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
+                if (Finish === true){
+                    cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
                 } else {
-                    console.log('test')
-                    cell_to_hightlight.classList.add('hover-orange','hoverNextTurn');
-                };
+                    if (window.gameState.currentTurn === 1){
+                        console.log('test')
+                        cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
+                    } else {
+                        console.log('test')
+                        cell_to_hightlight.classList.add('hover-orange','hoverNextTurn');
+                    };
+                }
             };
         });
     });
@@ -73,7 +78,12 @@ function updateGrid(game) {
         });
     });
     window.gameState.currentTurn = game.CurrenctTurn;
+    Finish = game.GameOver;
     console.log("Valeur du json ", game.CurrenctTurn);
     console.log("Type du currentTurn :", typeof window.gameState.currentTurn);
     console.log("Valeur du tour ", window.gameState.currentTurn);
+
+    document.querySelectorAll('.cellule').forEach(cell => {
+        cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
+    });
 }

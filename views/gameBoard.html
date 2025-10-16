@@ -34,14 +34,11 @@
 
   <div class="grille">
       {{range $i, $col := .Columns}}
-          <form method="post" action="/game">
-              <input type="hidden" name="col" value="{{$i}}">
-              <div class="colonne" onclick="this.parentElement.submit()">
-                  {{range $rowIdx , $cell := $col}}
-                      <div class="cellule {{if eq $cell 1}}black{{else if eq $cell 2}}orange{{end}}"></div>
-                  {{end}}
-              </div>
-          </form>
+        <div class="colonne" data-col="{{$i}}" onclick="playColumn({{$i}})">
+          {{range $rowIdx , $cell := $col}}
+              <div class="cellule"></div>
+          {{end}}
+        </div>
       {{end}}
   </div>
 
@@ -49,8 +46,13 @@
   <source src="/assets/sound/back-music.mp3" type="audio/mpeg">
   </audio>
 
+  <script>
+    // Exposer les données du backend au JavaScript
+    window.gameState = { currentTurn: {{.CurrenctTurn}} };
+  </script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="/assets/js/gameBoard.js"></script>
   <script>
     document.querySelector('.win-banner-overlay').style.display = 'none';
 

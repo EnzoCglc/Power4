@@ -1,92 +1,75 @@
 package controllers
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"power4/models"
 	"power4/utils"
-	"strconv"
-
 )
 
-func SwitchPlay(w http.ResponseWriter, r *http.Request) {
-	// action := r.FormValue("play")
-	exit := r.FormValue("exit")
+func GameDuo(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		reset(models.CurrentGame)
+		models.CurrentGame.GameMode = "duo"
+	}
+	utils.Render(w, "gameBoard.html", models.CurrentGame)
+	log.Println("Duo mod active")
+}
 
-	if exit == "reset" {
+func SwitchPlay(w http.ResponseWriter, r *http.Request) {
+	var request struct {
+		Col int `json:"col"`
+		Exit string `json:"reset"`
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		JSONError(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	if request.Exit == "reset" {
 		reset(models.CurrentGame)
 		utils.Render(w, "index.html", nil)
 		return
 	}
 
-	colStr := r.FormValue("col")
-	if colStr != "" {
-		col, err := strconv.Atoi(colStr)
+	if request.Col >= 0 {
+		err = play(models.CurrentGame, request.Col)
 		if err != nil {
-			log.Printf("invalid column %q: %v", colStr, err)
-		} else {
-			play(models.CurrentGame, col)
+			log.Printf("Invalid move in column %d: %v", request.Col, err)
+			return
 		}
+
+		log.Printf("Player %d played in column %d", models.CurrentGame.CurrenctTurn, request.Col)
 	}
-	utils.Render(w, "gameBoard.html", models.CurrentGame)
+
+	JSONSuccess(w, map[string]interface{}{
+		"game": models.CurrentGame,
+	})
 }
 
-func play(game *models.GridPage, col int) {
-	player := game.CurrenctTurn
+func JSONError(w http.ResponseWriter, message string, statusCode int) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
 
-	for row := models.Rows - 1; row >= 0; row-- {
-		if game.Columns[col][row] == models.Empty {
-			game.Columns[col][row] = player
-			if verifWin(game.Columns, player, col, row) {
-				log.Printf("Player %d win", player)
-				return
-			} else {
-				if player == models.P1 {
-					game.CurrenctTurn = models.P2
-				} else {
-					game.CurrenctTurn = models.P1
-				}
-				return
-			}
-		}
+	response := map[string]interface{}{
+		"success": false,
+		"error":   message,
 	}
+
+	json.NewEncoder(w).Encode(response)
 }
 
-func reset(game *models.GridPage) {
-	for i := 0; i < models.Cols; i++ {
-		game.Columns[i] = make([]int, models.Rows)
-	}
-	game.CurrenctTurn = models.P1
-}
+func JSONSuccess(w http.ResponseWriter, data interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 
-func verifWin(cols [][]int, player int, col int, row int) bool {
-	grid := [][2]int{
-		{1, 0},  // horizontal
-		{0, 1},  // vertical
-		{1, 1},  // diagonal \
-		{1, -1}, //diagonal /
+	response := map[string]interface{}{
+		"success": true,
+		"data":    data,
 	}
 
-	for _, g := range grid {
-		count := 1
-		count += countDirection(cols, player, col, row, g[0], g[1])
-		count += countDirection(cols, player, col, row, -g[0], -g[1])
-
-		if count >= 4 {
-			return true
-		}
-	}
-	return false
-}
-
-func countDirection(cols [][]int, player int, col int, row int, dc int, dr int) int {
-	c := col + dc
-	r := row + dr
-	count := 0
-	for c >= 0 && c < models.Cols && r >= 0 && r < models.Rows && cols[c][r] == player {
-		count += 1
-		c += dc
-		r += dr
-	}
-	return count
+	json.NewEncoder(w).Encode(response)
 }

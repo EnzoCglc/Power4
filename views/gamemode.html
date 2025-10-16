@@ -31,7 +31,7 @@
         <div class="buttons-section">
             <button class="game-button" id="play-solo">Play Solo</button>
 
-            <form action="/game" method="post">
+            <form action="/game/duo" method="post">
                 <input type="hidden" name="play" value="startGame">
                 <button class="game-button" id="play-1v1" type="submit">Play 1v1</button>
             </form>
@@ -46,8 +46,9 @@
             <h2>Select Level</h2>
             <div class="levels-grid">
 
-                <form action="/game" method="post">
+                <form action="/game/solo" method="post">
                     <input type="hidden" name="play" value="startGame">
+                    <input type="hidden" name="lvl" value="1">
                     <div class="level-item"><button class="level-circle" type="submit">1</button></div>
                 </form>
 

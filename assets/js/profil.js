@@ -124,3 +124,11 @@ function createBarChart() {
     ctx.fillText('Victoires', spacing + barWidth/2, height - 5);
     ctx.fillText('Défaites', spacing + barWidth + 20 + barWidth/2, height - 5);
 }
+
+// ========== INITIALISATION AU CHARGEMENT DE LA PAGE ==========
+document.addEventListener('DOMContentLoaded', () => {
+    updateDisplay();
+    displayHistory();
+    createDoughnutChart();
+    createBarChart();
+});

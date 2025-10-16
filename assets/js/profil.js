@@ -55,3 +55,12 @@ function displayHistory() {
     userData.historique.forEach(partie => {
         const item = document.createElement('div');
         item.className = `history-item ${partie.resultat}`;
+
+        const eloClass = partie.eloChange > 0 ? 'positive' : 'negative';
+        const eloSign = partie.eloChange > 0 ? '+' : '';
+
+        item.innerHTML = `
+
+
+
+        

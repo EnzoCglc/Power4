@@ -86,4 +86,22 @@ function updateGrid(game) {
     document.querySelectorAll('.cellule').forEach(cell => {
         cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
     });
+    if (Finish === true) {
+        document.querySelector('.win-banner-overlay').style.display = 'flex';
+    }
 }
+
+document.querySelector('.win-banner-overlay').style.display = 'none';
+
+    
+const bg = document.getElementById('bg');
+    bg.play().catch(()=>{ /* blocked until user gesture */ });
+
+// on first user gesture unmute and resume playback
+function unlockAudio(e){
+  bg.muted = false;
+  bg.play().catch(err => console.warn('play blocked:', err));
+  window.removeEventListener('pointerdown', unlockAudio);
+}
+
+window.addEventListener('pointerdown', unlockAudio, { once: true });

@@ -132,3 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
     createDoughnutChart();
     createBarChart();
 });
+
+function updateUserData(newData) {
+    userData = { ...userData, ...newData };
+    updateDisplay();
+    displayHistory();
+    createDoughnutChart();
+    createBarChart();
+}

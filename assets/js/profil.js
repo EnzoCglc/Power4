@@ -80,6 +80,8 @@ function createDoughnutChart() {
     const total = userData.victoires + userData.defaites;
     const victoiresAngle = (userData.victoires / total) * 2 * Math.PI;
 
+    ctx.clearRect(0, 0, size, size);
+
 
 
 }

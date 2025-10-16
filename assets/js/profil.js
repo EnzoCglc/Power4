@@ -1,6 +1,6 @@
 let userData = {
     username: 'enzo',
-    elo: 1019,
+    elo: 1020,
     victoires: 50,
     defaites: 40,
     historique: [
@@ -14,3 +14,7 @@ let userData = {
         { date: '2025-10-08', adversaire: 'Player8', resultat: 'victoire', eloChange: +17 }
     ]
 };
+
+function updateDisplay() {
+    document.getElement
+}

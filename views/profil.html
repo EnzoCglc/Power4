@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - Dashboard</title>
+    <style> </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Section Profil -->
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="avatar">EN</div>
+                <h2 class="username" id="displayUsername">enzo</h2>
+            </div>
+
+            <div class="profile-info">
+                <div class="info-item">
+                    <label>Username</label>
+                    <p id="usernameDisplay">enzo</p>
+                </div>
+
+                <div class="change-password">
+                    <h3>Changer le mot de passe</h3>
+                    <form id="passwordForm">
+                        <input type="password" placeholder="Mot de passe actuel" id="currentPassword" required>
+                        <input type="password" placeholder="Nouveau mot de passe" id="newPassword" required>
+                        <input type="password" placeholder="Confirmer le mot de passe" id="confirmPassword" required>
+                        <button type="submit" class="btn-save">Sauvegarder</button>
+                    </form>
+                </div>
+
+                <div class="stats-mini">
+                    <div class="stat-item">
+                        <span class="stat-label">ELO :</span>
+                        <span class="stat-value" id="eloValue">1019</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Victoires :</span>
+                        <span class="stat-value victoires" id="victoiresValue">50</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Défaites :</span>
+                        <span class="stat-value defaites" id="defaitesValue">40</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Dashboard -->
+        <div class="dashboard-card">
+            <h2 class="dashboard-title">Tableau de bord</h2>
+
+            <div class="elo-display">
+                <p class="elo-label">ELO actuel</p>
+                <p class="elo-number" id="eloMain">1019</p>
+            </div>
+
+            <div class="charts-container">
+                <canvas id="doughnutChart"></canvas>
+                <canvas id="barChart"></canvas>
+            </div>
+
+            <div class="winrate">
+                <p id="winrateText">56% de victoires</p>
+            </div>
+
+            <div class="history-section">
+                <h3>Historique des parties</h3>
+                <div class="history-list" id="historyList">
+                    <!-- L'historique sera généré dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="profil.js"></script>
+</body>
+</html>

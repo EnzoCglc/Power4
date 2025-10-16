@@ -60,7 +60,12 @@ function displayHistory() {
         const eloSign = partie.eloChange > 0 ? '+' : '';
 
         item.innerHTML = `
-
-
-
+            <div class="history-date">${partie.date}</div>
+            <div class="history-opponent">vs ${partie.adversaire}</div>
+            <div class="history-result">${partie.resultat}</div>
+            <div class="history-elo ${eloClass}">${eloSign}${partie.eloChange} ELO</div>
+        `;
         
+        historyList.appendChild(item);
+    });
+}

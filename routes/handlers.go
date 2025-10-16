@@ -15,7 +15,6 @@ func SetupRoutes() {
 
 	//Connect game function
 	http.HandleFunc("/game/duo", controllers.GameDuo)
-	http.HandleFunc("/game/solo", controllers.GameSolo)
 	http.HandleFunc("/game", controllers.SwitchPlay)
 
 	// Use FileServer to serve static assets like .png or css

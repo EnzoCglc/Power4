@@ -51,3 +51,7 @@ document.getElementById('passwordForm').addEventListener('submit', (e) => {
 function displayHistory() {
     const historyList = document.getElementById('historyList');
     historyList.innerHTML = '';
+    
+    userData.historique.forEach(partie => {
+        const item = document.createElement('div');
+        item.className = `history-item ${partie.resultat}`;

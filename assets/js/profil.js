@@ -69,3 +69,17 @@ function displayHistory() {
         historyList.appendChild(item);
     });
 }
+
+function createDoughnutChart() {
+    const canvas = document.getElementById('doughnutChart');
+    const ctx = canvas.getContext('2d');
+    const size = 200;
+    canvas.width = size;
+    canvas.height = size;
+
+    const total = userData.victoires + userData.defaites;
+    const victoiresAngle = (userData.victoires / total) * 2 * Math.PI;
+
+
+
+}

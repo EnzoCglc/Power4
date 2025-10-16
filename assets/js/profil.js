@@ -87,4 +87,10 @@ function createDoughnutChart() {
     ctx.strokeStyle = '#5B5FED';
     ctx.lineWidth = 40;
     ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, 80, -Math.PI/2 + victoiresAngle, 3*Math.PI/2);
+    ctx.strokeStyle = '#FF6B6B';
+    ctx.lineWidth = 40;
+    ctx.stroke();
 }

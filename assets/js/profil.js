@@ -110,12 +110,17 @@ function createBarChart() {
     
     ctx.clearRect(0, 0, width, height);
 
-const victoiresHeight = (userData.victoires / maxValue) * 100;
+    const victoiresHeight = (userData.victoires / maxValue) * 100;
     ctx.fillStyle = '#4A90E2';
     ctx.fillRect(spacing, height - victoiresHeight - 20, barWidth, victoiresHeight);
 
-        const defaitesHeight = (userData.defaites / maxValue) * 100;
+    const defaitesHeight = (userData.defaites / maxValue) * 100;
     ctx.fillStyle = '#FF8A8A';
     ctx.fillRect(spacing + barWidth + 20, height - defaitesHeight - 20, barWidth, defaitesHeight);
-
+   
+    ctx.fillStyle = '#8B92A8';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Victoires', spacing + barWidth/2, height - 5);
+    ctx.fillText('Défaites', spacing + barWidth + 20 + barWidth/2, height - 5);
 }

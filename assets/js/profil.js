@@ -29,3 +29,21 @@ function updateDisplay() {
     document.getElementById('winrateText').textContent = `${winrate}% de victoires`;
 }
 
+document.getElementById('passwordForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const current = document.getElementById('currentPassword').value;
+    const newPass = document.getElementById('newPassword').value;
+    const confirm = document.getElementById('confirmPassword').value;
+
+    if (newPass !== confirm) {
+        alert('Les mots de passe ne correspondent pas !');
+        return;
+    }
+
+    if (newPass.length < 6) {
+        alert('Le mot de passe doit contenir au moins 6 caractères !');
+        return;
+    }
+    alert('Mot de passe changé avec succès !');
+    e.target.reset();
+});

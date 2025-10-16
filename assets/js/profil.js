@@ -110,5 +110,8 @@ function createBarChart() {
     
     ctx.clearRect(0, 0, width, height);
 
+const victoiresHeight = (userData.victoires / maxValue) * 100;
+    ctx.fillStyle = '#4A90E2';
+    ctx.fillRect(spacing, height - victoiresHeight - 20, barWidth, victoiresHeight);
 
 }

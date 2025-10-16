@@ -47,3 +47,7 @@ document.getElementById('passwordForm').addEventListener('submit', (e) => {
     alert('Mot de passe changé avec succès !');
     e.target.reset();
 });
+
+function displayHistory() {
+    const historyList = document.getElementById('historyList');
+    historyList.innerHTML = '';

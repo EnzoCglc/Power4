@@ -103,4 +103,12 @@ function createBarChart() {
     canvas.width = width;
     canvas.height = height;
 
+    
+    const maxValue = Math.max(userData.victoires, userData.defaites);
+    const barWidth = 60;
+    const spacing = 40;
+    
+    ctx.clearRect(0, 0, width, height);
+
+
 }

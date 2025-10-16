@@ -16,5 +16,16 @@ let userData = {
 };
 
 function updateDisplay() {
-    document.getElement
+        document.getElement
+        document.getElementById('displayUsername').textContent = userData.username;
+        document.getElementById('usernameDisplay').textContent = userData.username;
+        document.getElementById('eloValue').textContent = userData.elo;
+        document.getElementById('eloMain').textContent = userData.elo;
+        document.getElementById('victoiresValue').textContent = userData.victoires;
+        document.getElementById('defaitesValue').textContent = userData.defaites;
+  
+    const total = userData.victoires + userData.defaites;
+    const winrate = Math.round((userData.victoires / total) * 100);
+    document.getElementById('winrateText').textContent = `${winrate}% de victoires`;
 }
+

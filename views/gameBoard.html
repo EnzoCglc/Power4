@@ -7,6 +7,7 @@
   <title>Spookie 4</title>
 </head>
 <body>
+
   <section class="exit-button">
     <form action="/" method="post">
     <input type="hidden" name="exit" value="reset">
@@ -43,10 +44,28 @@
           </form>
       {{end}}
   </div>
+
+  <audio id="bg" autoplay loop muted>
+  <source src="/assets/sound/back-music.mp3" type="audio/mpeg">
+  </audio>
+
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script>
     document.querySelector('.win-banner-overlay').style.display = 'none';
+
+    const bg = document.getElementById('bg');
+
+// try to start (returns a promise)
+bg.play().catch(()=>{ /* blocked until user gesture */ });
+
+// on first user gesture unmute and resume playback
+function unlockAudio(e){
+  bg.muted = false;
+  bg.play().catch(err => console.warn('play blocked:', err));
+  window.removeEventListener('pointerdown', unlockAudio);
+}
+window.addEventListener('pointerdown', unlockAudio, { once: true });
   </script>
 </body>
 </html>

@@ -94,3 +94,13 @@ function createDoughnutChart() {
     ctx.lineWidth = 40;
     ctx.stroke();
 }
+
+function createBarChart() {
+    const canvas = document.getElementById('barChart');
+    const ctx = canvas.getContext('2d');
+    const width = 200;
+    const height = 150;
+    canvas.width = width;
+    canvas.height = height;
+
+}

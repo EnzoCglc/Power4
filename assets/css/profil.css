@@ -121,3 +121,38 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(91, 95, 237, 0.4);
 }
+
+.stats-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #F7FAFC;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 15px;
+    color: #4A5568;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2D3748;
+}
+
+.stat-value.victoires {
+    color: #4A90E2;
+}
+
+.stat-value.defaites {
+    color: #FF6B6B;
+}

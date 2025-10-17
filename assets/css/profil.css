@@ -76,3 +76,30 @@ body {
     color: #2D3748;
     font-weight: 500;
 }
+
+.change-password {
+    background: #F7FAFC;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.change-password h3 {
+    font-size: 18px;
+    color: #2D3748;
+    margin-bottom: 15px;
+}
+
+.change-password input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.change-password input:focus {
+    outline: none;
+    border-color: #5B5FED;
+}

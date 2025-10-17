@@ -200,3 +200,7 @@ body {
     margin-bottom: 30px;
     padding: 20px 0;
 }
+
+#doughnutChart {
+    max-width: 200px;
+}

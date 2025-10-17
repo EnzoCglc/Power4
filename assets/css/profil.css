@@ -103,3 +103,21 @@ body {
     outline: none;
     border-color: #5B5FED;
 }
+
+.btn-save {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #5B5FED 0%, #7B82FF 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(91, 95, 237, 0.4);
+}

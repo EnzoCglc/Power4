@@ -46,3 +46,9 @@ body {
     color: white;
     margin: 0 auto 15px;
 }
+
+.username {
+    font-size: 28px;
+    color: #2D3748;
+    font-weight: 600;
+}

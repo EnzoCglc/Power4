@@ -208,3 +208,14 @@ body {
 #barChart {
     max-width: 200px;
 }
+
+.winrate {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.winrate p {
+    font-size: 24px;
+    color: #4A5568;
+    font-weight: 600;
+}

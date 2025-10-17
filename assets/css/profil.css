@@ -156,3 +156,17 @@ body {
 .stat-value.defaites {
     color: #FF6B6B;
 }
+
+.dashboard-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-title {
+    font-size: 28px;
+    color: #2D3748;
+    margin-bottom: 30px;
+    font-weight: 600;
+}

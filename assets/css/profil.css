@@ -52,3 +52,9 @@ body {
     color: #2D3748;
     font-weight: 600;
 }
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}

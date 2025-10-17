@@ -58,3 +58,21 @@ body {
     flex-direction: column;
     gap: 25px;
 }
+
+.info-item {
+    border-bottom: 1px solid #E2E8F0;
+    padding-bottom: 15px;
+}
+
+.info-item label {
+    font-size: 14px;
+    color: #718096;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info-item p {
+    font-size: 18px;
+    color: #2D3748;
+    font-weight: 500;
+}

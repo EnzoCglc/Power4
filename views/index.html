@@ -40,7 +40,11 @@
         </li>
        </ul>
     {{if .}}
-        <div aria-label="User Login Button"
+        <section class="login-button">
+        <form action="/profil" method="post">
+            <input type="hidden" name="login" value="loginPage">
+        <div onclick="this.parentElement.submit()"
+            aria-label="User Login Button"
             tabindex="0"
             role="button"
             class="user-profile"
@@ -57,7 +61,7 @@
             ></path>
             </g>
             </svg>
-        <p>Welcome {{.}}</p>
+        <p>Profil {{.}}</p>
     {{else}}
         <section class="login-button">
         <form action="/signin" method="post">

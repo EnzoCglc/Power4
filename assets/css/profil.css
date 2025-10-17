@@ -219,3 +219,100 @@ body {
     color: #4A5568;
     font-weight: 600;
 }
+
+.history-section {
+    margin-top: 30px;
+}
+
+.history-section h3 {
+    font-size: 22px;
+    color: #2D3748;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: #F7FAFC;
+    border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: #CBD5E0;
+    border-radius: 10px;
+}
+
+.history-item {
+    display: grid;
+    grid-template-columns: 110px 1fr 120px 100px;
+    gap: 15px;
+    align-items: center;
+    padding: 15px 20px;
+    background: #F7FAFC;
+    border-radius: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.history-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.history-item.victoire {
+    border-left: 4px solid #4A90E2;
+}
+
+.history-item.defaite {
+    border-left: 4px solid #FF6B6B;
+}
+
+.history-date {
+    font-size: 13px;
+    color: #718096;
+}
+
+.history-opponent {
+    font-size: 15px;
+    color: #2D3748;
+    font-weight: 500;
+}
+
+.history-result {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.victoire .history-result {
+    color: #4A90E2;
+}
+
+.defaite .history-result {
+    color: #FF6B6B;
+}
+
+.history-elo {
+    font-size: 15px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.history-elo.positive {
+    color: #48BB78;
+}
+
+.history-elo.negative {
+    color: #F56565;
+}

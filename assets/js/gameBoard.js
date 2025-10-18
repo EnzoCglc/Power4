@@ -90,7 +90,15 @@ function updateGrid(game) {
         cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
     });
     if (Finish === true) {
+        const winMsg = document.getElementById('win-msg');
+        if (game.Winner === 1) {
+            winMsg.textContent = "Player 1 Win a game"
+        } else {
+            winMsg.textContent = "Player 2 Win a game"
+        }
+        
         document.querySelector('.win-banner-overlay').style.display = 'flex';
+
     }
 }
 

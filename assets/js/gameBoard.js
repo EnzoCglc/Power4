@@ -56,6 +56,23 @@ function playColumn(colIndex) {
     });
 }
 
+function dropToken(colIndex, rowIndex, player) {
+    const Col = document.querySelectorAll('.colonne')[colIndex];
+    const Cell = Col.querySelectorAll('.cellule')[rowIndex];
+
+    Cell.classList.remove('black', 'orange', 'animate-drop');
+
+    if (player === 1) {
+        Cell.classList.add('black', 'animate-drop');
+    } else {
+        Cell.classList.add('orange', 'animate-drop');
+    }
+
+    Cell.addEventListener('animationEnd', () => {
+        Cell.classList.remove('animate-drop');
+    })
+}
+
 function updateGrid(game) {
     console.log('Update du Grid');
 
@@ -67,12 +84,12 @@ function updateGrid(game) {
 
            // console.log("Value de la cellule : ", Cell)
 
-            if (cell === 1) {
-                Cell.classList.add('black');
+            if (cell === 1 && !Cell.classList.contains('black')) {
+                dropToken(colIndex, rowIndex, 1);
                 console.log(`Pion du joueur en [${colIndex}][${rowIndex}]`);
 
-            } else if (cell === 2) {
-                Cell.classList.add('orange');
+            } else if (cell === 2 && !Cell.classList.contains('orange')) {
+                dropToken(colIndex, rowIndex, 2);
                 console.log(`Pion du joueur en [${colIndex}][${rowIndex}]`);
             }
         });

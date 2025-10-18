@@ -12,10 +12,8 @@ document.querySelectorAll('.colonne').forEach(col => {
                     cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
                 } else {
                     if (window.gameState.currentTurn === 1){
-                        console.log('test')
                         cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
                     } else {
-                        console.log('test')
                         cell_to_hightlight.classList.add('hover-orange','hoverNextTurn');
                     };
                 }
@@ -31,8 +29,7 @@ document.querySelectorAll('.colonne').forEach(col => {
 });
 
 function playColumn(colIndex) {
-    console.log('Envoi du coup pour la colonne:', colIndex);
-    
+   
     fetch('/game', {
         method: 'POST',
         headers: {
@@ -44,7 +41,6 @@ function playColumn(colIndex) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('✅ Réponse reçue du backend:', data);
         if (data.success) {
             updateGrid(data.data.game);
         } else {
@@ -74,31 +70,21 @@ function dropToken(colIndex, rowIndex, player) {
 }
 
 function updateGrid(game) {
-    console.log('Update du Grid');
-
     game.Columns.forEach((col, colIndex) => {
         const Col = document.querySelectorAll('.colonne')[colIndex];
 
         col.forEach((cell, rowIndex) => {
             const Cell = Col.querySelectorAll('.cellule')[rowIndex];
 
-           // console.log("Value de la cellule : ", Cell)
-
             if (cell === 1 && !Cell.classList.contains('black')) {
                 dropToken(colIndex, rowIndex, 1);
-                console.log(`Pion du joueur en [${colIndex}][${rowIndex}]`);
-
             } else if (cell === 2 && !Cell.classList.contains('orange')) {
                 dropToken(colIndex, rowIndex, 2);
-                console.log(`Pion du joueur en [${colIndex}][${rowIndex}]`);
             }
         });
     });
     window.gameState.currentTurn = game.CurrenctTurn;
     Finish = game.GameOver;
-    console.log("Valeur du json ", game.CurrenctTurn);
-    console.log("Type du currentTurn :", typeof window.gameState.currentTurn);
-    console.log("Valeur du tour ", window.gameState.currentTurn);
 
     document.querySelectorAll('.cellule').forEach(cell => {
         cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
@@ -112,13 +98,12 @@ document.querySelector('.win-banner-overlay').style.display = 'none';
 
     
 const bg = document.getElementById('bg');
-    bg.play().catch(()=>{ /* blocked until user gesture */ });
 
-// on first user gesture unmute and resume playback
-function unlockAudio(e){
-  bg.muted = false;
+function unlockAudio() {
+  if (bg.muted) {
+    bg.muted = false;
+  }
   bg.play().catch(err => console.warn('play blocked:', err));
-  window.removeEventListener('pointerdown', unlockAudio);
 }
 
 window.addEventListener('pointerdown', unlockAudio, { once: true });

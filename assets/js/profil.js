@@ -84,13 +84,13 @@ function createDoughnutChart() {
 
     ctx.beginPath();
     ctx.arc(size/2, size/2, 80, -Math.PI/2, -Math.PI/2 + victoiresAngle);
-    ctx.strokeStyle = '#5B5FED';
+    ctx.strokeStyle = '#1C1A22';
     ctx.lineWidth = 40;
     ctx.stroke();
 
     ctx.beginPath();
     ctx.arc(size/2, size/2, 80, -Math.PI/2 + victoiresAngle, 3*Math.PI/2);
-    ctx.strokeStyle = '#FF6B6B';
+    ctx.strokeStyle = '#F28C28';
     ctx.lineWidth = 40;
     ctx.stroke();
 }
@@ -111,14 +111,14 @@ function createBarChart() {
     ctx.clearRect(0, 0, width, height);
 
     const victoiresHeight = (userData.victoires / maxValue) * 100;
-    ctx.fillStyle = '#4A90E2';
+    ctx.fillStyle = '#F28C28';
     ctx.fillRect(spacing, height - victoiresHeight - 20, barWidth, victoiresHeight);
 
     const defaitesHeight = (userData.defaites / maxValue) * 100;
-    ctx.fillStyle = '#FF8A8A';
+    ctx.fillStyle = '#1C1A22';
     ctx.fillRect(spacing + barWidth + 20, height - defaitesHeight - 20, barWidth, defaitesHeight);
    
-    ctx.fillStyle = '#8B92A8';
+    ctx.fillStyle = '#ffffffff';
     ctx.font = '12px Arial';
     ctx.textAlign = 'center';
     ctx.fillText('Victoires', spacing + barWidth/2, height - 5);

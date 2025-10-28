@@ -4,13 +4,26 @@
     box-sizing: border-box;
 }
 
+:root {
+    --pumpkin: #F28C28;
+    --dark-bg: #1C1A22;
+    --card-bg: #26222E;
+    --soft-bg: #2E2937;
+    --text-light: #EAE6DF;
+    --text-muted: #A59E96;
+    --border-light: #3A3443;
+    --error: #C54C4C;
+    --success: #9CCB6E;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--dark-bg) 0%, #000 100%);
+    color: var(--text-light);
     min-height: 100vh;
     padding: 20px;
 }
- 
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -21,10 +34,10 @@ body {
 }
 
 .profile-card {
-    background: white;
+    background: var(--card-bg);
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     height: fit-content;
 }
 
@@ -36,7 +49,7 @@ body {
 .avatar {
     width: 100px;
     height: 100px;
-    background: linear-gradient(135deg, #5B5FED 0%, #7B82FF 100%);
+    background: linear-gradient(135deg, var(--pumpkin) 0%, #3E2C41 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -49,7 +62,7 @@ body {
 
 .username {
     font-size: 28px;
-    color: #2D3748;
+    color: var(--pumpkin);
     font-weight: 600;
 }
 
@@ -60,32 +73,32 @@ body {
 }
 
 .info-item {
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid var(--border-light);
     padding-bottom: 15px;
 }
 
 .info-item label {
     font-size: 14px;
-    color: #718096;
+    color: var(--text-muted);
     display: block;
     margin-bottom: 5px;
 }
 
 .info-item p {
     font-size: 18px;
-    color: #2D3748;
+    color: var(--text-light);
     font-weight: 500;
 }
 
 .change-password {
-    background: #F7FAFC;
+    background: var(--soft-bg);
     padding: 20px;
     border-radius: 12px;
 }
 
 .change-password h3 {
     font-size: 18px;
-    color: #2D3748;
+    color: var(--text-light);
     margin-bottom: 15px;
 }
 
@@ -93,21 +106,23 @@ body {
     width: 100%;
     padding: 12px;
     margin-bottom: 12px;
-    border: 1px solid #E2E8F0;
+    border: 1px solid var(--border-light);
     border-radius: 8px;
+    background: #1F1B25;
+    color: var(--text-light);
     font-size: 14px;
     transition: border-color 0.3s;
 }
 
 .change-password input:focus {
     outline: none;
-    border-color: #5B5FED;
+    border-color: var(--pumpkin);
 }
 
 .btn-save {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #5B5FED 0%, #7B82FF 100%);
+    background: linear-gradient(135deg, var(--pumpkin) 0%, #B96C18 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -119,14 +134,14 @@ body {
 
 .btn-save:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(91, 95, 237, 0.4);
+    box-shadow: 0 5px 15px rgba(242, 140, 40, 0.3);
 }
 
 .stats-mini {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: #F7FAFC;
+    background: var(--soft-bg);
     padding: 20px;
     border-radius: 12px;
 }
@@ -139,34 +154,34 @@ body {
 
 .stat-label {
     font-size: 15px;
-    color: #4A5568;
+    color: var(--text-muted);
     font-weight: 500;
 }
 
 .stat-value {
     font-size: 18px;
     font-weight: 700;
-    color: #2D3748;
+    color: var(--text-light);
 }
 
 .stat-value.victoires {
-    color: #4A90E2;
+    color: var(--pumpkin);
 }
 
 .stat-value.defaites {
-    color: #FF6B6B;
+    color: var(--error);
 }
 
 .dashboard-card {
-    background: white;
+    background: var(--card-bg);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
 .dashboard-title {
     font-size: 28px;
-    color: #2D3748;
+    color: var(--text-light);
     margin-bottom: 30px;
     font-weight: 600;
 }
@@ -174,21 +189,21 @@ body {
 .elo-display {
     text-align: center;
     margin-bottom: 40px;
-    background: linear-gradient(135deg, #EBF4FF 0%, #E6E9FF 100%);
+    background: linear-gradient(135deg, #2E2937 0%, #3E2C41 100%);
     padding: 30px;
     border-radius: 15px;
 }
 
 .elo-label {
     font-size: 16px;
-    color: #718096;
+    color: var(--text-muted);
     margin-bottom: 10px;
 }
 
 .elo-number {
     font-size: 56px;
     font-weight: 700;
-    color: #5B5FED;
+    color: var(--pumpkin);
 }
 
 .charts-container {
@@ -201,11 +216,7 @@ body {
     padding: 20px 0;
 }
 
-#doughnutChart {
-    max-width: 200px;
-}
-
-#barChart {
+#doughnutChart, #barChart {
     max-width: 200px;
 }
 
@@ -216,7 +227,7 @@ body {
 
 .winrate p {
     font-size: 24px;
-    color: #4A5568;
+    color: var(--text-light);
     font-weight: 600;
 }
 
@@ -226,7 +237,7 @@ body {
 
 .history-section h3 {
     font-size: 22px;
-    color: #2D3748;
+    color: var(--text-light);
     margin-bottom: 20px;
     font-weight: 600;
 }
@@ -245,12 +256,12 @@ body {
 }
 
 .history-list::-webkit-scrollbar-track {
-    background: #F7FAFC;
+    background: var(--soft-bg);
     border-radius: 10px;
 }
 
 .history-list::-webkit-scrollbar-thumb {
-    background: #CBD5E0;
+    background: var(--border-light);
     border-radius: 10px;
 }
 
@@ -260,32 +271,33 @@ body {
     gap: 15px;
     align-items: center;
     padding: 15px 20px;
-    background: #F7FAFC;
+    background: var(--soft-bg);
     border-radius: 12px;
     transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 4px solid var(--border-light);
 }
 
 .history-item:hover {
     transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 5px 15px rgba(242, 140, 40, 0.15);
 }
 
 .history-item.victoire {
-    border-left: 4px solid #4A90E2;
+    border-left-color: var(--pumpkin);
 }
 
 .history-item.defaite {
-    border-left: 4px solid #FF6B6B;
+    border-left-color: var(--error);
 }
 
 .history-date {
     font-size: 13px;
-    color: #718096;
+    color: var(--text-muted);
 }
 
 .history-opponent {
     font-size: 15px;
-    color: #2D3748;
+    color: var(--text-light);
     font-weight: 500;
 }
 
@@ -296,11 +308,11 @@ body {
 }
 
 .victoire .history-result {
-    color: #4A90E2;
+    color: var(--pumpkin);
 }
 
 .defaite .history-result {
-    color: #FF6B6B;
+    color: var(--error);
 }
 
 .history-elo {
@@ -310,11 +322,11 @@ body {
 }
 
 .history-elo.positive {
-    color: #48BB78;
+    color: var(--success);
 }
 
 .history-elo.negative {
-    color: #F56565;
+    color: var(--error);
 }
 
 @media (max-width: 1024px) {

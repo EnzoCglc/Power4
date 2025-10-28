@@ -148,7 +148,7 @@ body {
  box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
  transform: translateY(-2px);
 }
-
+/* From Uiverse.io by gharsh11032000 */ 
 .card {
   display: flex;
   width: 200px;
@@ -228,41 +228,4 @@ body {
 
 .card:hover:after {
   transform: translateX(100%);
-}
-
-@keyframes dropToken {
-  0% {
-    transform: translateY(-200px);
-    opacity: 0;
-  }
-  80% {
-    transform: translateY(10px);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.cellule.black, .cellule.orange {
-  animation: dropToken 0.4s ease-in;
-}
-
-.scoreboard {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #fff;
-  text-align: center;
-  font-size: 20px;
-  background: rgba(0,0,0,0.6);
-  padding: 10px 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px orange;
-}
-
-.colonne:hover .cellule:not(.black):not(.orange):last-child {
-  box-shadow: 0 0 20px 5px orange;
-  transition: box-shadow 0.3s ease;
 }

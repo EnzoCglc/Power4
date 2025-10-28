@@ -31,7 +31,7 @@ body {
 .grille::before {
     content: "";
     position: absolute;
-    top: -220px;   /* marge à ajuster */
+    top: -220px;
     left: -200px;
     right: -200px;
     bottom: -100px;

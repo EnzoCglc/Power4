@@ -7,6 +7,20 @@ import (
 	"power4/utils"
 )
 
+type ProfilData struct {
+	User       *models.User
+	WinRate    float64
+	TotalGames int
+}
+
+func calculateWinRate(wins, losses int) float64 {
+	totalGames := wins + losses
+	if totalGames == 0 {
+		return 0.0
+	}
+	return (float64(wins) / float64(totalGames)) * 100
+}
+
 func Profil(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("username")
 	if err != nil {
@@ -29,7 +43,16 @@ func Profil(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.Render(w, "profil.html", user)
+	winRate := calculateWinRate(user.Win, user.Losses)
+	totalGames := user.Win + user.Losses
 
-	log.Println("info de l'user ", user)
+	data := ProfilData{
+		User:       user,
+		WinRate:    winRate,
+		TotalGames: totalGames,
+	}
+
+	utils.Render(w, "profil.html", data)
+
+	log.Println("info de l'user ", user, "- WinRate:", winRate, "% - Total games:", totalGames)
 }

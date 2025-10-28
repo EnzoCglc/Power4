@@ -23,67 +23,46 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 	confirm := r.FormValue("confirm_password")
 
 	if password != confirm {
-		utils.Render(w, "registerPage.html", "Passwords don't match")
+		utils.Render(w, "registerPage.html", "Passwords are not identical")
 		return
 	}
 
 	exists, err := verifExists(username)
 
 	if err != nil {
-		http.Error(w, "Error to load Database", http.StatusInternalServerError)
+		log.Printf("Error checking if user exists: %v", err)
+		utils.Render(w, "registerPage.html", "Error to load Database")
 		return
 	}
 
 	if exists {
-		log.Println("User already use")
-		utils.Render(w, "registerPage.html", nil)
+		log.Println("User already exists:", username)
+		utils.Render(w, "registerPage.html", "Username already taken")
 		return
 	}
 
-	createUser(username, password)
+	err = createUser(username, password)
+	if err != nil {
+		log.Printf("Error creating user: %v", err)
+		utils.Render(w, "registerPage.html", "Error creating user")
+		return
+	}
 
 	log.Println("Nouveau compte accepté :", username)
-	utils.Render(w, "loginPage.html", nil)
+	utils.Render(w, "loginPage.html", "Account created successfully! Please log in.")
 }
 
 func verifExists(username string) (bool, error) {
-	db, err := models.LoadDB("database/db.json")
-
-	if err != nil {
-		return false, err
-	}
-
-	for _, u := range db.Users {
-		if u.Username == username {
-			return true, nil
-		}
-	}
-	return false, nil
+	return models.UserExists(username)
 }
 
 func createUser(username, password string) error {
-	db, err := models.LoadDB("database/db.json")
-
-	if err != nil {
-		return err
-	}
-
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-
 	if err != nil {
 		return err
 	}
 
-	newUser := models.User{
-		ID:           len(db.Users) + 1,
-		Username:     username,
-		PasswordHash: string(hash),
-		Elo:          1000,
-		Win:          0,
-		Losses:       0,
-	}
-	db.Users = append(db.Users, newUser)
-	return models.SaveDB("database/db.json", db)
+	return models.CreateUser(username, string(hash))
 }
 
 func LoginInfo(w http.ResponseWriter, r *http.Request) {
@@ -93,33 +72,29 @@ func LoginInfo(w http.ResponseWriter, r *http.Request) {
 	err := login(username, password)
 
 	if err != nil {
-		http.Error(w, "Error to load Database", http.StatusInternalServerError)
+		log.Printf("Login error for user %s: %v", username, err)
+		utils.Render(w, "loginPage.html", "Invalid username or password")
 		return
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name: "username",
+		Name:  "username",
 		Value: username,
-		Path: "/",
+		Path:  "/",
 	})
 
-	log.Println("Login Succes for :", username)
+	log.Println("Login Success for:", username)
 	utils.Render(w, "index.html", username)
 }
 
 func login(username, password string) error {
-	db, err := models.LoadDB("database/db.json")
-
+	user, err := models.GetUserByUsername(username)
 	if err != nil {
 		return err
 	}
-
-	for _, u := range db.Users {
-		if u.Username == username {
-			storeHash := u.PasswordHash
-
-			return bcrypt.CompareHashAndPassword([]byte(storeHash), []byte(password))
-		}
+	if user == nil {
+		return bcrypt.ErrMismatchedHashAndPassword
 	}
-	return err
+
+	return bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 }

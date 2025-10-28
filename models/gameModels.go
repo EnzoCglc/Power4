@@ -12,8 +12,11 @@ const (
 type GridPage struct {
 	Columns      [][]int
 	CurrenctTurn int
+	GameMode     string
+	BotLvl		 int
 	Winner       int
-	Player1Name  string
+	GameOver     bool
+	IsDraw       bool
 }
 
 var CurrentGame = newGrid()

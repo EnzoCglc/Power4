@@ -33,6 +33,10 @@ func createTable() {
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		username TEXT NOT NULL UNIQUE,
 		email TEXT,
+		password_hash TEXT NOT NULL,
+		elo INTEGER DEFAULT 1000,
+		victoires INTEGER DEFAULT 0,
+		defaites INTEGER DEFAULT 0,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 	);`
 

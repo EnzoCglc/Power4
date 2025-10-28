@@ -23,20 +23,20 @@
     <div class="container">
         <div class="box">
             <h2>BOOH ! Are You A New Monster ?</h2>
-                <form action="/register" method="post">
+                <form action="/register" method="post" autocomplete="off">
                     <div class="input-box">
-                        <input type="text" name="username" required>
+                        <input type="text" name="username" autocomplete="off" required>
                         <label>UserName</label>
                     </div>
                     <div class="input-box">
-                        <input type="password" name="password" required>
+                        <input type="password" name="password" autocomplete="new-password" required>
                         <label>Password</label>
                     </div>
                     <div class="input-box">
-                        <input type="password" name="confirm_password" required>
+                        <input type="password" name="confirm_password" autocomplete="new-password" required>
                         <label>Confirm Password</label>
                     </div>
-                    <p class="red_message">You Password is not good</p>
+                    {{if .}}<p class="red_message">{{.}}</p>{{end}}
                     <button type="submit" class="btn">SignUp</button>
                 </form>
             <p class="signup-text">Already Have An Account? 

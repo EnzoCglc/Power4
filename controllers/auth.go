@@ -23,7 +23,7 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 	confirm := r.FormValue("confirm_password")
 
 	if password != confirm {
-		utils.Render(w, "registerPage.html", "Passwords don't match")
+		utils.Render(w, "registerPage.html", "Passwords are not identical")
 		return
 	}
 
@@ -31,25 +31,25 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Printf("Error checking if user exists: %v", err)
-		http.Error(w, "Error to load Database", http.StatusInternalServerError)
+		utils.Render(w, "registerPage.html", "Error to load Database")
 		return
 	}
 
 	if exists {
-		log.Println("User already use")
-		utils.Render(w, "registerPage.html", nil)
+		log.Println("User already exists:", username)
+		utils.Render(w, "registerPage.html", "Username already taken")
 		return
 	}
 
 	err = createUser(username, password)
 	if err != nil {
 		log.Printf("Error creating user: %v", err)
-		http.Error(w, "Error creating user", http.StatusInternalServerError)
+		utils.Render(w, "registerPage.html", "Error creating user")
 		return
 	}
 
 	log.Println("Nouveau compte accepté :", username)
-	utils.Render(w, "loginPage.html", nil)
+	utils.Render(w, "loginPage.html", "Account created successfully! Please log in.")
 }
 
 func verifExists(username string) (bool, error) {
@@ -73,17 +73,17 @@ func LoginInfo(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Printf("Login error for user %s: %v", username, err)
-		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+		utils.Render(w, "loginPage.html", "Invalid username or password")
 		return
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name: "username",
+		Name:  "username",
 		Value: username,
-		Path: "/",
+		Path:  "/",
 	})
 
-	log.Println("Login Succes for :", username)
+	log.Println("Login Success for:", username)
 	utils.Render(w, "index.html", username)
 }
 

@@ -4,13 +4,14 @@ import (
 	"log"
 	"net/http"
 	"power4/database"
+	"power4/models"
 	"power4/routes"
 )
 
 func main() {
 	// Init Database
 	database.InitDB()
-	defer database.DB.Close()
+	defer models.DB.Connect.Close()
 
 	// Setup routes
 	routes.SetupRoutes()

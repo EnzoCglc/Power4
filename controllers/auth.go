@@ -30,6 +30,7 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 	exists, err := verifExists(username)
 
 	if err != nil {
+		log.Printf("Error checking if user exists: %v", err)
 		http.Error(w, "Error to load Database", http.StatusInternalServerError)
 		return
 	}
@@ -40,50 +41,28 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createUser(username, password)
+	err = createUser(username, password)
+	if err != nil {
+		log.Printf("Error creating user: %v", err)
+		http.Error(w, "Error creating user", http.StatusInternalServerError)
+		return
+	}
 
 	log.Println("Nouveau compte accepté :", username)
 	utils.Render(w, "loginPage.html", nil)
 }
 
 func verifExists(username string) (bool, error) {
-	db, err := models.LoadDB("database/db.json")
-
-	if err != nil {
-		return false, err
-	}
-
-	for _, u := range db.Users {
-		if u.Username == username {
-			return true, nil
-		}
-	}
-	return false, nil
+	return models.UserExists(username)
 }
 
 func createUser(username, password string) error {
-	db, err := models.LoadDB("database/db.json")
-
-	if err != nil {
-		return err
-	}
-
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-
 	if err != nil {
 		return err
 	}
 
-	newUser := models.User{
-		ID:           len(db.Users) + 1,
-		Username:     username,
-		PasswordHash: string(hash),
-		Elo:          1000,
-		Win:          0,
-		Losses:       0,
-	}
-	db.Users = append(db.Users, newUser)
-	return models.SaveDB("database/db.json", db)
+	return models.CreateUser(username, string(hash))
 }
 
 func LoginInfo(w http.ResponseWriter, r *http.Request) {
@@ -93,7 +72,8 @@ func LoginInfo(w http.ResponseWriter, r *http.Request) {
 	err := login(username, password)
 
 	if err != nil {
-		http.Error(w, "Error to load Database", http.StatusInternalServerError)
+		log.Printf("Login error for user %s: %v", username, err)
+		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}
 
@@ -108,18 +88,13 @@ func LoginInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func login(username, password string) error {
-	db, err := models.LoadDB("database/db.json")
-
+	user, err := models.GetUserByUsername(username)
 	if err != nil {
 		return err
 	}
-
-	for _, u := range db.Users {
-		if u.Username == username {
-			storeHash := u.PasswordHash
-
-			return bcrypt.CompareHashAndPassword([]byte(storeHash), []byte(password))
-		}
+	if user == nil {
+		return bcrypt.ErrMismatchedHashAndPassword
 	}
-	return err
+
+	return bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 }

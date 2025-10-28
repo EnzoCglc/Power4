@@ -3,31 +3,34 @@ package database
 import (
 	"database/sql"
 	"log"
+	"power4/models"
 
-	_ "github.com/mattn/go-sqlite3" 
+	_ "github.com/mattn/go-sqlite3"
 )
 
-var DB *sql.DB
-const datafile string = "database/data.db" 
+func InitDB() {
+	datafile := "database/data.db"
 
-func InitDB(){
-	var err error
-
-	DB,err = sql.Open("sqlite3", datafile)
+	connect, err := sql.Open("sqlite3", datafile)
 	if err != nil {
-		log.Println("Failed to connect Sqlite", err)
+		log.Fatal("Failed to connect to SQLite:", err)
 	}
 
-	if err = DB.Ping(); err != nil {
-		log.Println("Failed to ping db ")
+	if err = connect.Ping(); err != nil {
+		log.Fatal("Failed to ping database:", err)
 	}
 
-	log.Println("Sqlite Connected")
+	log.Println("SQLite Connected")
 
-	createTable()
+	models.DB = &models.Database{
+		Connect:  connect,
+		Datafile: datafile,
+	}
+
+	createTables()
 }
 
-func createTable() {
+func createTables() {
 	query := `
 	CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,7 +43,7 @@ func createTable() {
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 	);`
 
-	_ , err := DB.Exec(query)
+	_, err := models.DB.Connect.Exec(query)
 	if err != nil {
 		log.Println("Failed to create table", err)
 	}

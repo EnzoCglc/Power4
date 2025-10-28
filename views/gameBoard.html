@@ -7,19 +7,13 @@
   <title>Spookie 4</title>
 </head>
 <body>
-  <div class="scoreboard">
-  <p><span id="player1Name">Player 1</span>: <span id="scoreP1">0</span></p>
-    <p><span id="botName">Bot</span>: <span id="scoreBot">0</span></p>
-    <p>Tour : <span id="turnNumber">1</span></p>
-</div>
   </div>
     <div class="card">
     <div class="card-content">
-      <p class="card-title">{{if .Player1Name}}{{.Player1Name}}{{else}}Player 1{{end}}</p>
+      <p class="card-title">Player 1</p>
       <p class="card-para">Time : 0.30 sec</p>
     </div>
   </div>
-    </section>
   <div class="grille">
       {{range $i, $col := .Columns}}
           <form method="post" action="/game">
@@ -52,31 +46,11 @@
     </div>
     <div class="card">
     <div class="card-content">
-      <p class="card-title">Bot</p>
-      <p class="card-para">Elo: 1000</p>
-      <p class="card-para">Win: 10</p>
+      <p class="card-title">Player 2</p>
+      <p class="card-para">Time : 0.30 sec</p>
     </div>
   </div>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
-<audio id="soundPlay" src="/assets/sounds/drop.mp3" preload="auto"></audio>
-
-<script>
-document.querySelectorAll('.colonne').forEach(col => {
-  col.addEventListener('click', () => {
-    const sound = document.getElementById('soundPlay');
-    sound.currentTime = 0;
-    sound.play();
-  });
-});
-
-let turn = 1;
-document.querySelectorAll('.colonne').forEach(col => {
-  col.addEventListener('click', () => {
-    document.getElementById('turnNumber').textContent = ++turn;
-  });
-});
-
-</script>
 </html>

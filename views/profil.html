@@ -12,13 +12,13 @@
         <div class="profile-card">
             <div class="profile-header">
                 <div class="avatar">EN</div>
-                <h2 class="username" id="displayUsername">enzo</h2>
+                <h2 class="username" id="displayUsername">{{.Username}}</h2>
             </div>
 
             <div class="profile-info">
                 <div class="info-item">
                     <label>Username</label>
-                    <p id="usernameDisplay">enzo</p>
+                    <p id="usernameDisplay">{{.Username}}</p>
                 </div>
 
                 <div class="change-password">
@@ -34,15 +34,15 @@
                 <div class="stats-mini">
                     <div class="stat-item">
                         <span class="stat-label">ELO :</span>
-                        <span class="stat-value" id="eloValue">1019</span>
+                        <span class="stat-value" id="eloValue">{{.Elo}}</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Victoires :</span>
-                        <span class="stat-value victoires" id="victoiresValue">50</span>
+                        <span class="stat-value victoires" id="victoiresValue">{{.Win}}</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Défaites :</span>
-                        <span class="stat-value defaites" id="defaitesValue">40</span>
+                        <span class="stat-value defaites" id="defaitesValue">{{.Losses}}</span>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
 
             <div class="elo-display">
                 <p class="elo-label">ELO actuel</p>
-                <p class="elo-number" id="eloMain">1019</p>
+                <p class="elo-number" id="eloMain">{{.Elo}}</p>
             </div>
 
             <div class="charts-container">

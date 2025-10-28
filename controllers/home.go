@@ -6,5 +6,10 @@ import (
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	utils.Render(w, "index.html", nil)
+	username := ""
+	cookie, err := r.Cookie("username")
+	if err == nil {
+		username = cookie.Value
+	}
+	utils.Render(w, "index.html", username)
 }

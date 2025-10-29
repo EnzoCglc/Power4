@@ -84,4 +84,7 @@ function createBarChart() {
 document.addEventListener('DOMContentLoaded', () => {
     createDoughnutChart();
     createBarChart();
+
+    const avatar = document.getElementById('avatar-text');
+    avatar.textContent = avatar.textContent.substring(0 , 2).toUpperCase();
 });

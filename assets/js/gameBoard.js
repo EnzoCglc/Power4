@@ -92,6 +92,22 @@ function updateGrid(game) {
     });
     if (Finish === true) {
         const winMsg = document.getElementById('win-msg');
+        const body = {
+            winner: game.Winner,
+            player1: player1,
+            player2: "player2",
+            isDraw: game.isDraw
+        };
+
+        fetch('/game/result', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)    
+        })
+        .then(res => res.json())
+        .then(data => console.log("Résultat enregistré:", data))
+        .catch(err => console.error("Erreur update ELO:", err));
+        
         if (game.Winner === 1) {
             winMsg.textContent = `${player1} Win a game`
         } else {

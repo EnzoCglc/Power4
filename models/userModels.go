@@ -1,6 +1,8 @@
 package models
 
 import "database/sql"
+import "log"
+
 type Database struct {
 	Connect  *sql.DB
 	Datafile string
@@ -67,4 +69,22 @@ func CreateUser(username, passwordHash string) error {
 
 	_, err := DB.Connect.Exec(query, username, passwordHash)
 	return err
+}
+
+func UpdateUserEloAndStats(user *User) error {
+	log.Printf("[DB] Updating ELO/stats for user '%s' | ELO=%d | Wins=%d | Losses=%d\n",
+		user.Username, user.Elo, user.Win, user.Losses)
+
+	_, err := DB.Connect.Exec(`
+		UPDATE users
+		SET elo = ?, victoires = ?, defaites = ?
+		WHERE username = ?`,
+		user.Elo, user.Win, user.Losses, user.Username,
+	)
+	if err != nil {
+		log.Printf("[DB] ❌ SQL update failed for user '%s': %v\n", user.Username, err)
+		return err
+	}
+
+	return nil
 }

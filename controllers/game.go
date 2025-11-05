@@ -12,6 +12,13 @@ func GameDuo(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		reset(models.CurrentGame)
 		models.CurrentGame.GameMode = "duo"
+
+		rankedValue := r.FormValue("ranked")
+		if rankedValue == "true" {
+			models.CurrentGame.Ranked = true
+		} else {
+			models.CurrentGame.Ranked = false
+		}
 	}
 
 	cookie , err := r.Cookie("username")

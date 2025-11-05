@@ -17,6 +17,7 @@ type GridPage struct {
 	Winner       int
 	GameOver     bool
 	IsDraw       bool
+	Ranked		 bool
 }
 
 var CurrentGame = newGrid()

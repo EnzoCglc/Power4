@@ -17,6 +17,9 @@ func SetupRoutes() {
 	http.HandleFunc("/game/duo", controllers.GameDuo)
 	http.HandleFunc("/game", controllers.SwitchPlay)
 
+	//Result game
+	http.HandleFunc("/game/result", controllers.GameResult)
+
 	//Connect LoginPage
 	http.HandleFunc("/signin", controllers.LoginPage)
 	http.HandleFunc("/login", controllers.LoginInfo)

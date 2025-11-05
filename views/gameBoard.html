@@ -23,7 +23,7 @@
 
 
   <div class="grille">
-      {{range $i, $col := .Columns}}
+      {{range $i, $col := .CurrentGame.Columns}}
         <div class="colonne" data-col="{{$i}}" onclick="playColumn({{$i}})">
           {{range $rowIdx , $cell := $col}}
               <div class="cellule"></div>
@@ -60,7 +60,10 @@
 
   <script>
     // Exposer les données du backend au JavaScript
-    window.gameState = { currentTurn: {{.CurrenctTurn}} };
+    window.gameState = { 
+      currentTurn: {{.CurrenctTurn}},
+      player1: "{{.Player1}}"
+    };
   </script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

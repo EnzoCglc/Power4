@@ -13,8 +13,29 @@ func GameDuo(w http.ResponseWriter, r *http.Request) {
 		reset(models.CurrentGame)
 		models.CurrentGame.GameMode = "duo"
 	}
-	utils.Render(w, "gameBoard.html", models.CurrentGame)
-	log.Println("Duo mod active")
+
+	cookie , err := r.Cookie("username")
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	username := cookie.Value
+	user, err := models.GetUserByUsername(username)
+
+	if err != nil || user == nil {
+		log.Println("User not found: ", username)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	data := map[string]interface{}{
+		"CurrentGame": models.CurrentGame,
+		"Player1":     user.Username,
+	}
+
+	utils.Render(w, "gameBoard.html", data)
+	log.Println("Duo mod active for : ", user.Username)
 }
 
 func SwitchPlay(w http.ResponseWriter, r *http.Request) {

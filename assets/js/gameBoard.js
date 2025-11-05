@@ -1,4 +1,5 @@
 let currentTurn = window.gameState.currentTurn;
+let player1 = window.gameState.player1;
 let Finish = false;
 
 document.querySelectorAll('.colonne').forEach(col => {
@@ -92,7 +93,7 @@ function updateGrid(game) {
     if (Finish === true) {
         const winMsg = document.getElementById('win-msg');
         if (game.Winner === 1) {
-            winMsg.textContent = "Player 1 Win a game"
+            winMsg.textContent = `${player1} Win a game`
         } else {
             winMsg.textContent = "Player 2 Win a game"
         }

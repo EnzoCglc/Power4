@@ -12,10 +12,8 @@ document.querySelectorAll('.colonne').forEach(col => {
                     cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
                 } else {
                     if (window.gameState.currentTurn === 1){
-                        console.log('test')
                         cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
                     } else {
-                        console.log('test')
                         cell_to_hightlight.classList.add('hover-orange','hoverNextTurn');
                     };
                 }
@@ -31,8 +29,7 @@ document.querySelectorAll('.colonne').forEach(col => {
 });
 
 function playColumn(colIndex) {
-    console.log('Envoi du coup pour la colonne:', colIndex);
-    
+   
     fetch('/game', {
         method: 'POST',
         headers: {
@@ -44,7 +41,6 @@ function playColumn(colIndex) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('✅ Réponse reçue du backend:', data);
         if (data.success) {
             updateGrid(data.data.game);
         } else {
@@ -56,38 +52,53 @@ function playColumn(colIndex) {
     });
 }
 
-function updateGrid(game) {
-    console.log('Update du Grid');
+function dropToken(colIndex, rowIndex, player) {
+    const Col = document.querySelectorAll('.colonne')[colIndex];
+    const Cell = Col.querySelectorAll('.cellule')[rowIndex];
 
+    Cell.classList.remove('black', 'orange', 'animate-drop');
+
+    if (player === 1) {
+        Cell.classList.add('black', 'animate-drop');
+    } else {
+        Cell.classList.add('orange', 'animate-drop');
+    }
+
+    Cell.addEventListener('animationEnd', () => {
+        Cell.classList.remove('animate-drop');
+    })
+}
+
+function updateGrid(game) {
     game.Columns.forEach((col, colIndex) => {
         const Col = document.querySelectorAll('.colonne')[colIndex];
 
         col.forEach((cell, rowIndex) => {
             const Cell = Col.querySelectorAll('.cellule')[rowIndex];
 
-           // console.log("Value de la cellule : ", Cell)
-
-            if (cell === 1) {
-                Cell.classList.add('black');
-                console.log(`Pion du joueur en [${colIndex}][${rowIndex}]`);
-
-            } else if (cell === 2) {
-                Cell.classList.add('orange');
-                console.log(`Pion du joueur en [${colIndex}][${rowIndex}]`);
+            if (cell === 1 && !Cell.classList.contains('black')) {
+                dropToken(colIndex, rowIndex, 1);
+            } else if (cell === 2 && !Cell.classList.contains('orange')) {
+                dropToken(colIndex, rowIndex, 2);
             }
         });
     });
     window.gameState.currentTurn = game.CurrenctTurn;
     Finish = game.GameOver;
-    console.log("Valeur du json ", game.CurrenctTurn);
-    console.log("Type du currentTurn :", typeof window.gameState.currentTurn);
-    console.log("Valeur du tour ", window.gameState.currentTurn);
 
     document.querySelectorAll('.cellule').forEach(cell => {
         cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
     });
     if (Finish === true) {
+        const winMsg = document.getElementById('win-msg');
+        if (game.Winner === 1) {
+            winMsg.textContent = "Player 1 Win a game"
+        } else {
+            winMsg.textContent = "Player 2 Win a game"
+        }
+        
         document.querySelector('.win-banner-overlay').style.display = 'flex';
+
     }
 }
 
@@ -95,13 +106,12 @@ document.querySelector('.win-banner-overlay').style.display = 'none';
 
     
 const bg = document.getElementById('bg');
-    bg.play().catch(()=>{ /* blocked until user gesture */ });
 
-// on first user gesture unmute and resume playback
-function unlockAudio(e){
-  bg.muted = false;
+function unlockAudio() {
+  if (bg.muted) {
+    bg.muted = false;
+  }
   bg.play().catch(err => console.warn('play blocked:', err));
-  window.removeEventListener('pointerdown', unlockAudio);
 }
 
 window.addEventListener('pointerdown', unlockAudio, { once: true });

@@ -5,13 +5,13 @@ import (
 	"log"
 	"power4/models"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 func InitDB() {
 	datafile := "database/data.db"
 
-	connect, err := sql.Open("sqlite3", datafile)
+	connect, err := sql.Open("sqlite", datafile)
 	if err != nil {
 		log.Fatal("Failed to connect to SQLite:", err)
 	}

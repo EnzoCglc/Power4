@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"power4/models"
 	"math/rand"
@@ -58,33 +59,35 @@ func decodeBody(r *http.Request) (*gameResultBody, error) {
 
 func processResult(body *gameResultBody) (*eloResult, error) {
 	if body.IsDraw {
+		log.Println("[DEBUG] Match is draw, skipping ELO.")
 		return nil, errors.New("draw game, no ELO change")
 	}
-
 	winnerName, loserName := getResult(body)
 	if winnerName == "" || loserName == "" {
+		log.Println("[DEBUG] Invalid players (empty names)")
 		return nil, errors.New("invalid players: winner/loser missing")
 	}
-
 	winner, err := models.GetUserByUsername(winnerName)
-	if err != nil || winner == nil {
-		return nil, errors.New("winner not found in database")
+	if err != nil {
+		log.Printf("[DEBUG] Error fetching winner (%s): %v", winnerName, err)
 	}
-
 	loser, err := models.GetUserByUsername(loserName)
-	if err != nil || loser == nil {
-		return nil, errors.New("loser not found in database")
+	if err != nil {
+		log.Printf("[DEBUG] Error fetching loser (%s): %v", loserName, err)
 	}
-
 	delta := calculateElo(winner, loser)
-
 	if err := models.UpdateUserEloAndStats(winner); err != nil {
-		return nil, err
+		log.Println("[DEBUG] Failed to update winner ELO:", err)
 	}
 	if err := models.UpdateUserEloAndStats(loser); err != nil {
-		return nil, err
+		log.Println("[DEBUG] Failed to update loser ELO:", err)
 	}
-
+	if err := models.InsertHistory(winner.Username, loser.Username, winner.Username, delta, models.CurrentGame.Ranked); err != nil {
+		log.Println("[DEBUG] Failed to insert match history:", err)
+	} else {
+		log.Printf("[DEBUG] ✅ History inserted for match %s vs %s | Winner=%s | Δ=%d",
+			winner.Username, loser.Username, winner.Username, delta)
+	}
 	return &eloResult{
 		Winner: winner.Username,
 		Delta:  delta,
@@ -102,6 +105,7 @@ func getResult(body *gameResultBody) (string, string) {
 	case models.P2:
 		return body.Player2, body.Player1
 	default:
+		log.Println("[DEBUG] Unknown winner ID:", body.Winner)
 		return "", ""
 	}
 }

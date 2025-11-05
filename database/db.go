@@ -27,10 +27,11 @@ func InitDB() {
 		Datafile: datafile,
 	}
 
-	createTables()
+	createUserTable()
+	createHistoryTable()
 }
 
-func createTables() {
+func createUserTable() {
 	query := `
 	CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,4 +48,21 @@ func createTables() {
 	if err != nil {
 		log.Println("Failed to create table", err)
 	}
+}
+
+func createHistoryTable() {
+    query := `
+    CREATE TABLE IF NOT EXISTS match_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        player1 TEXT NOT NULL,
+        player2 TEXT NOT NULL,
+        winner TEXT,
+        delta INTEGER DEFAULT 0,
+        ranked BOOLEAN DEFAULT 0,
+        date DATETIME DEFAULT CURRENT_TIMESTAMP
+    );`
+    _, err := models.DB.Connect.Exec(query)
+    if err != nil {
+        log.Println("Failed to create table", err)
+    }
 }

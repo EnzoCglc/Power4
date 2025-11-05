@@ -65,9 +65,25 @@
             </div>
 
             <div class="history-section">
-                <h3>Historique des parties</h3>
-                <div class="history-list" id="historyList">
+            <h3>Historique des parties</h3>
+            {{if .History}}
+                {{range .History}}
+                <div class="history-item {{if eq .Winner $.User.Username}}victoire{{else}}defaite{{end}}">
+                    <div class="history-date">{{.Date.Format "02/01/2006 15:04"}}</div>
+                    <div class="history-opponent">
+                    vs {{if eq .Player1 $.User.Username}}{{.Player2}}{{else}}{{.Player1}}{{end}}
+                    </div>
+                    <div class="history-result">
+                    {{if eq .Winner $.User.Username}}Victoire{{else}}Défaite{{end}}
+                    </div>
+                    <div class="history-elo {{if eq .Winner $.User.Username}}positive{{else}}negative{{end}}">
+                    {{if eq .Winner $.User.Username}}+{{.Delta}}{{else}}-{{.Delta}}{{end}} ELO
+                    </div>
                 </div>
+                {{end}}
+            {{else}}
+                <p class="no-history">Aucune partie enregistrée</p>
+            {{end}}
             </div>
         </div>
     </div>

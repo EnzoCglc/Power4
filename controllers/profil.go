@@ -11,6 +11,7 @@ type ProfilData struct {
 	User       *models.User
 	WinRate    float64
 	TotalGames int
+	History    []models.History
 }
 
 func calculateWinRate(wins, losses int) float64 {
@@ -46,10 +47,17 @@ func Profil(w http.ResponseWriter, r *http.Request) {
 	winRate := calculateWinRate(user.Win, user.Losses)
 	totalGames := user.Win + user.Losses
 
+	history, err := models.GetHistoryByPlayer(username)
+	if err != nil {
+		log.Printf("Error to get history for %s : %s", username, err)
+		return
+	}
+
 	data := ProfilData{
 		User:       user,
 		WinRate:    winRate,
 		TotalGames: totalGames,
+		History:    history,
 	}
 
 	utils.Render(w, "profil.html", data)

@@ -9,12 +9,36 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+type Auth_Data struct {
+	ErrorMessage   string
+	SuccessMessage string
+}
+
 func LoginPage(w http.ResponseWriter, r *http.Request) {
-	utils.Render(w, "loginPage.html", nil)
+	data := Auth_Data{}
+
+	// Check for error or success messages in query params
+	if errorMsg := r.URL.Query().Get("error"); errorMsg != "" {
+		data.ErrorMessage = errorMsg
+	}
+	if successMsg := r.URL.Query().Get("success"); successMsg != "" {
+		data.SuccessMessage = successMsg
+	}
+	utils.Render(w, "loginPage.html", data)
 }
 
 func RegisterPage(w http.ResponseWriter, r *http.Request) {
-	utils.Render(w, "registerPage.html", nil)
+	data := Auth_Data{}
+
+	// Check for error or success messages in query params
+	if errorMsg := r.URL.Query().Get("error"); errorMsg != "" {
+		data.ErrorMessage = errorMsg
+	}
+	if successMsg := r.URL.Query().Get("success"); successMsg != "" {
+		data.SuccessMessage = successMsg
+	}
+
+	utils.Render(w, "registerPage.html", data)
 }
 
 func RegisterInfo(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +47,14 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 	confirm := r.FormValue("confirm_password")
 
 	if password != confirm {
-		utils.Render(w, "registerPage.html", "Passwords are not identical")
+		log.Println("Passwords are not identical")
+		http.Redirect(w, r, "/signup?error=passwords_do_not_match", http.StatusSeeOther)
+		return
+	}
+
+	if len(password) < 8 {
+		log.Printf("Password too short for user %s", username)
+		http.Redirect(w, r, "/signup?error=password_too_short", http.StatusSeeOther)
 		return
 	}
 
@@ -31,25 +62,25 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Printf("Error checking if user exists: %v", err)
-		utils.Render(w, "registerPage.html", "Error to load Database")
+		http.Redirect(w, r, "/signup?error=database_error", http.StatusSeeOther)
 		return
 	}
 
 	if exists {
 		log.Println("User already exists:", username)
-		utils.Render(w, "registerPage.html", "Username already taken")
+		http.Redirect(w, r, "/signup?error=username_already_exists", http.StatusSeeOther)
 		return
 	}
 
 	err = createUser(username, password)
 	if err != nil {
 		log.Printf("Error creating user: %v", err)
-		utils.Render(w, "registerPage.html", "Error creating user")
+		http.Redirect(w, r, "/signup?error=internal_error", http.StatusSeeOther)
 		return
 	}
 
 	log.Println("Nouveau compte accepté :", username)
-	utils.Render(w, "loginPage.html", "Account created successfully! Please log in.")
+	http.Redirect(w, r, "/signin?success=registration_successful", http.StatusSeeOther)
 }
 
 func verifExists(username string) (bool, error) {

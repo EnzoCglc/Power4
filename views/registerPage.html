@@ -45,8 +45,6 @@
                             ❌ Password must contain at least 8 characters
                         {{else if eq .ErrorMessage "username_already_exists"}}
                             ❌ This username is already taken
-                        {{else if eq .ErrorMessage "username_too_short"}}
-                            ❌ Username must contain at least 3 characters
                         {{else if eq .ErrorMessage "internal_error"}}
                             ❌ Internal error, please try again
                         {{else if eq .ErrorMessage "database_error"}}
@@ -55,18 +53,7 @@
                             ❌ {{.ErrorMessage}}
                         {{end}}
                     </div>
-                    {{end}}
-
-                    {{if .SuccessMessage}}
-                    <div class="message success-message">
-                        {{if eq .SuccessMessage "registration_successful"}}
-                            ✅ Account created successfully!
-                        {{else}}
-                            ✅ {{.SuccessMessage}}
-                        {{end}}
-                    </div>
-                    {{end}}
-                    
+                    {{end}}                    
                     <button type="submit" class="btn">SignUp</button>
                 </form>
             <p class="signup-text">Already Have An Account? 

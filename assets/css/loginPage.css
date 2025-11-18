@@ -36,6 +36,27 @@ body {
     margin-bottom: 40px;
 }
 
+.message {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+}
+
+.error-message {
+    background: rgba(197, 76, 76, 0.15);
+    border: 1px solid var(--error);
+    color: #FF8A8A;
+}
+
+.success-message {
+    background: rgba(156, 203, 110, 0.15);
+    border: 1px solid var(--success);
+    color: #B8E986;
+}
+
 .input-box {
     position: relative;
     margin: 30px 0;

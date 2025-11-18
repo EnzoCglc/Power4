@@ -88,3 +88,31 @@ func UpdateUserEloAndStats(user *User) error {
 
 	return nil
 }
+
+func UpdatePassword(username, newPasswordHash string) error {
+	if DB == nil || DB.Connect == nil {
+		return sql.ErrConnDone
+	}
+
+	log.Printf("[DB] Updating password for user '%s'\n", username)
+
+	query := `UPDATE users SET password_hash = ? WHERE username = ?`
+	result, err := DB.Connect.Exec(query, newPasswordHash, username)
+	if err != nil {
+		log.Printf("[DB] ❌ Password update failed for user '%s': %v\n", username, err)
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		log.Printf("[DB] ⚠️ No rows affected for user '%s'\n", username)
+		return sql.ErrNoRows
+	}
+
+	log.Printf("[DB] ✅ Password updated successfully for user '%s'\n", username)
+	return nil
+}

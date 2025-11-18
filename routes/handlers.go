@@ -30,6 +30,7 @@ func SetupRoutes() {
 
 	//Connect Profil Page
 	http.HandleFunc("/profil", controllers.Profil)
+	http.HandleFunc("/profil/update-password", controllers.NewPassword)
 
 	// Use FileServer to serve static assets like .png or css
 	fs := http.FileServer(http.Dir("./assets"))

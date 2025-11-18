@@ -8,10 +8,12 @@ import (
 )
 
 type ProfilData struct {
-	User       *models.User
-	WinRate    float64
-	TotalGames int
-	History    []models.History
+	User           *models.User
+	WinRate        float64
+	TotalGames     int
+	History        []models.History
+	ErrorMessage   string
+	SuccessMessage string
 }
 
 func calculateWinRate(wins, losses int) float64 {
@@ -58,6 +60,14 @@ func Profil(w http.ResponseWriter, r *http.Request) {
 		WinRate:    winRate,
 		TotalGames: totalGames,
 		History:    history,
+	}
+
+	// Check for error or success messages in query params
+	if errorMsg := r.URL.Query().Get("error"); errorMsg != "" {
+		data.ErrorMessage = errorMsg
+	}
+	if successMsg := r.URL.Query().Get("success"); successMsg != "" {
+		data.SuccessMessage = successMsg
 	}
 
 	utils.Render(w, "profil.html", data)

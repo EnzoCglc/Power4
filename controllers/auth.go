@@ -98,3 +98,44 @@ func login(username, password string) error {
 
 	return bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 }
+
+func NewPassword(w http.ResponseWriter, r *http.Request) {
+	username := r.FormValue("username")
+	old_password := r.FormValue("old_password")
+	new_password1 := r.FormValue("new_password1")
+	new_password2 := r.FormValue("new_password2")
+
+	err := login(username, old_password)
+	if err != nil {
+		log.Printf("Current password incorrect for user %s: %v", username, err)
+		http.Redirect(w, r, "/profil?error=current_password_incorrect", http.StatusSeeOther)
+		return
+	}
+
+	if new_password1 != new_password2 {
+		log.Printf("New passwords do not match for user %s", username)
+		http.Redirect(w, r, "/profil?error=passwords_do_not_match", http.StatusSeeOther)
+		return
+	}
+
+	if len(new_password1) < 8 {
+		log.Printf("New password too short for user %s", username)
+		http.Redirect(w, r, "/profil?error=password_too_short", http.StatusSeeOther)
+		return
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(new_password1), bcrypt.DefaultCost)
+	if err != nil {
+		log.Printf("Error hashing password for user %s: %v", username, err)
+		http.Redirect(w, r, "/profil?error=internal_error", http.StatusSeeOther)
+		return
+	}
+
+	err = models.UpdatePassword(username, string(hash))
+	if err != nil {
+		log.Printf("Error updating password in database for user %s: %v", username, err)
+		http.Redirect(w, r, "/profil?error=database_error", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/profil?success=password_updated", http.StatusSeeOther)
+}

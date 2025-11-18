@@ -22,10 +22,37 @@
 
                 <div class="change-password">
                     <h3>Changer le mot de passe</h3>
-                    <form id="passwordForm">
-                        <input type="password" placeholder="Mot de passe actuel" id="currentPassword" required>
-                        <input type="password" placeholder="Nouveau mot de passe" id="newPassword" required>
-                        <input type="password" placeholder="Confirmer le mot de passe" id="confirmPassword" required>
+                    {{if .ErrorMessage}}
+                    <div class="message error-message">
+                        {{if eq .ErrorMessage "current_password_incorrect"}}
+                            ❌ Le mot de passe actuel est incorrect
+                        {{else if eq .ErrorMessage "passwords_do_not_match"}}
+                            ❌ Les nouveaux mots de passe ne correspondent pas
+                        {{else if eq .ErrorMessage "password_too_short"}}
+                            ❌ Le mot de passe doit contenir au moins 8 caractères
+                        {{else if eq .ErrorMessage "internal_error"}}
+                            ❌ Erreur interne, veuillez réessayer
+                        {{else if eq .ErrorMessage "database_error"}}
+                            ❌ Erreur de base de données
+                        {{else}}
+                            ❌ {{.ErrorMessage}}
+                        {{end}}
+                    </div>
+                    {{end}}
+                    {{if .SuccessMessage}}
+                    <div class="message success-message">
+                        {{if eq .SuccessMessage "password_updated"}}
+                            ✅ Mot de passe mis à jour avec succès !
+                        {{else}}
+                            ✅ {{.SuccessMessage}}
+                        {{end}}
+                    </div>
+                    {{end}}
+                    <form action="/profil/update-password" method="post" autocomplete="new-password">
+                        <input type="hidden" name="username" value="{{.User.Username}}">
+                        <input type="password" placeholder="Mot de passe actuel" autocomplete="new-password" name="old_password" required>
+                        <input type="password" placeholder="Nouveau mot de passe" name="new_password1" required>
+                        <input type="password" placeholder="Confirmer le mot de passe" name="new_password2" required>
                         <button type="submit" class="btn-save">Sauvegarder</button>
                     </form>
                 </div>

@@ -104,6 +104,27 @@ body {
     margin-bottom: 15px;
 }
 
+.change-password .message {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+}
+
+.change-password .error-message {
+    background: rgba(197, 76, 76, 0.15);
+    border: 1px solid var(--error);
+    color: #FF8A8A;
+}
+
+.change-password .success-message {
+    background: rgba(156, 203, 110, 0.15);
+    border: 1px solid var(--success);
+    color: #B8E986;
+}
+
 .change-password input {
     width: 100%;
     padding: 12px;

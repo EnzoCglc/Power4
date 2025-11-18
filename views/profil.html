@@ -25,15 +25,15 @@
                     {{if .ErrorMessage}}
                     <div class="message error-message">
                         {{if eq .ErrorMessage "current_password_incorrect"}}
-                            ❌ Le mot de passe actuel est incorrect
+                            ❌ Current password is incorrect
                         {{else if eq .ErrorMessage "passwords_do_not_match"}}
-                            ❌ Les nouveaux mots de passe ne correspondent pas
+                            ❌ The new passwords do not match
                         {{else if eq .ErrorMessage "password_too_short"}}
-                            ❌ Le mot de passe doit contenir au moins 8 caractères
+                            ❌ Password must contain at least 8 characters
                         {{else if eq .ErrorMessage "internal_error"}}
-                            ❌ Erreur interne, veuillez réessayer
+                            ❌ Internal error, please try again
                         {{else if eq .ErrorMessage "database_error"}}
-                            ❌ Erreur de base de données
+                            ❌ Database error
                         {{else}}
                             ❌ {{.ErrorMessage}}
                         {{end}}
@@ -42,7 +42,7 @@
                     {{if .SuccessMessage}}
                     <div class="message success-message">
                         {{if eq .SuccessMessage "password_updated"}}
-                            ✅ Mot de passe mis à jour avec succès !
+                            ✅ Password updated successfully!
                         {{else}}
                             ✅ {{.SuccessMessage}}
                         {{end}}

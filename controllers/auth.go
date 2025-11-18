@@ -104,7 +104,7 @@ func LoginInfo(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Printf("Login error for user %s: %v", username, err)
-		utils.Render(w, "loginPage.html", "Invalid username or password")
+		http.Redirect(w, r, "/signin?error=invalid_login", http.StatusSeeOther)
 		return
 	}
 

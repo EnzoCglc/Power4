@@ -32,6 +32,15 @@
                     <input type="password" name="password" autocomplete="new-password" required>
                     <label>Password</label>
                 </div>
+                {{if .ErrorMessage}}
+                <div class="message error-message">
+                    {{if eq .ErrorMessage "invalid_login"}}
+                        ❌ Invalid username or password
+                    {{else}}
+                        ❌ {{.ErrorMessage}}
+                    {{end}}
+                </div>
+                {{end}}                    
                 {{if .SuccessMessage}}
                     <div class="message success-message">
                     {{if eq .SuccessMessage "registration_successful"}}

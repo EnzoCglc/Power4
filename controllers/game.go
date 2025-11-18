@@ -77,7 +77,7 @@ func SwitchPlay(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		log.Printf("Player %d played in column %d", models.CurrentGame.CurrenctTurn, request.Col)
+		log.Printf("Player %d played in column %d", models.CurrentGame.CurrentTurn, request.Col)
 	}
 
 	JSONSuccess(w, map[string]interface{}{

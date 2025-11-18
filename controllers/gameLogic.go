@@ -41,11 +41,11 @@ func findAvailableRow(cols [][]int, col int) int {
 }
 
 func setPiece(game *models.GridPage, col, row int) {
-	game.Columns[col][row] = game.CurrenctTurn
+	game.Columns[col][row] = game.CurrentTurn
 }
 
 func handlePostMove(game *models.GridPage, col, row int) {
-	player := game.CurrenctTurn
+	player := game.CurrentTurn
 
 	if verifWin(game.Columns, player, col, row) {
 		setWinner(game, player)
@@ -76,17 +76,17 @@ func reset(game *models.GridPage) {
 	for i := 0; i < models.Cols; i++ {
 		game.Columns[i] = make([]int, models.Rows)
 	}
-	game.CurrenctTurn = models.P1
+	game.CurrentTurn = models.P1
 	game.Winner = models.Empty
 	game.GameOver = false
 	game.IsDraw = false
 }
 
 func switchPlayer(game *models.GridPage) {
-	if game.CurrenctTurn == models.P1 {
-		game.CurrenctTurn = models.P2
+	if game.CurrentTurn == models.P1 {
+		game.CurrentTurn = models.P2
 	} else {
-		game.CurrenctTurn = models.P1
+		game.CurrentTurn = models.P1
 	}
 }
 

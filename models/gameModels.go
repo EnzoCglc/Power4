@@ -11,7 +11,7 @@ const (
 
 type GridPage struct {
 	Columns      [][]int
-	CurrenctTurn int
+	CurrentTurn int
 	GameMode     string
 	BotLvl		 int
 	Winner       int
@@ -25,7 +25,7 @@ var CurrentGame = newGrid()
 func newGrid() *GridPage {
 	g := &GridPage{
 		Columns:      make([][]int, Cols),
-		CurrenctTurn: P1,
+		CurrentTurn: P1,
 		Winner:       Empty,
 	}
 	for i := 0; i < Cols; i++ {

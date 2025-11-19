@@ -10,7 +10,6 @@ func SetupRoutes() {
 	http.HandleFunc("/", controllers.Home)
 
 	//Connect Gamemode
-
 	http.HandleFunc("/gamemode", controllers.GameMode)
 
 	//Connect game function
@@ -31,6 +30,9 @@ func SetupRoutes() {
 	//Connect Profil Page
 	http.HandleFunc("/profil", controllers.Profil)
 	http.HandleFunc("/profil/update-password", controllers.NewPassword)
+
+	//Logout
+	http.HandleFunc("/logout", controllers.Logout)
 
 	// Use FileServer to serve static assets like .png or css
 	fs := http.FileServer(http.Dir("./assets"))

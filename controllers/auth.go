@@ -130,6 +130,16 @@ func login(username, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 }
 
+func Logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:  "username",
+		Value: "",
+		Path:  "/",
+		MaxAge: -1,
+	})
+	http.Redirect(w,r,"/",http.StatusSeeOther)
+}
+
 func NewPassword(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 	old_password := r.FormValue("old_password")

@@ -1,25 +1,26 @@
 let currentTurn = window.gameState.currentTurn;
 let player1 = window.gameState.player1;
+let gameMode = window.gameState.gameMode || "duo";
+let botLevel = window.gameState.botLevel || 0;
 let Finish = false;
 
 document.querySelectorAll('.colonne').forEach(col => {
     col.addEventListener('mouseenter', () => {
-        col.querySelectorAll('.cellule').forEach(cell => {
-            if (!cell.classList.contains('black') && !cell.classList.contains('orange')) {
-                let nb_cell = col.querySelectorAll('.cellule').length - col.querySelectorAll('.black, .orange').length;
-                let nb_cell_to_highlight = nb_cell -1;
-                let cell_to_hightlight = col.querySelectorAll('.cellule')[nb_cell_to_highlight];
-                if (Finish === true){
-                    cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
-                } else {
-                    if (window.gameState.currentTurn === 1){
-                        cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
-                    } else {
-                        cell_to_hightlight.classList.add('hover-orange','hoverNextTurn');
-                    };
-                }
-            };
-        });
+        if (Finish === true) return;
+
+        // Trouver la première cellule disponible (la plus basse)
+        let nb_cell = col.querySelectorAll('.cellule').length - col.querySelectorAll('.black, .orange').length;
+        let nb_cell_to_highlight = nb_cell - 1;
+
+        if (nb_cell_to_highlight >= 0) {
+            let cell_to_highlight = col.querySelectorAll('.cellule')[nb_cell_to_highlight];
+
+            if (currentTurn === 1) {
+                cell_to_highlight.classList.add('hover-black', 'hoverNextTurn');
+            } else {
+                cell_to_highlight.classList.add('hover-orange', 'hoverNextTurn');
+            }
+        }
     });
 
     col.addEventListener('mouseleave', () => {
@@ -30,8 +31,9 @@ document.querySelectorAll('.colonne').forEach(col => {
 });
 
 function playColumn(colIndex) {
-   
-    fetch('/game', {
+    const endpoint = gameMode === "bot" ? '/game/bot/play' : '/game';
+
+    fetch(endpoint, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -84,7 +86,8 @@ function updateGrid(game) {
             }
         });
     });
-    window.gameState.currentTurn = game.CurrenctTurn;
+    currentTurn = game.CurrentTurn;
+    window.gameState.currentTurn = game.CurrentTurn;
     Finish = game.GameOver;
 
     document.querySelectorAll('.cellule').forEach(cell => {
@@ -92,28 +95,35 @@ function updateGrid(game) {
     });
     if (Finish === true) {
         const winMsg = document.getElementById('win-msg');
-        const body = {
-            winner: game.Winner,
-            player1: player1,
-            player2: "player2",
-            isDraw: game.isDraw
-        };
 
-        fetch('/game/result', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)    
-        })
-        .then(res => res.json())
-        .then(data => console.log("Résultat enregistré:", data))
-        .catch(err => console.error("Erreur update ELO:", err));
-        
+        // Ne sauvegarder le résultat que pour le mode duo
+        if (gameMode === "duo") {
+            const body = {
+                winner: game.Winner,
+                player1: player1,
+                player2: "player2",
+                isDraw: game.isDraw
+            };
+
+            fetch('/game/result', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+            .then(res => res.json())
+            .then(data => console.log("Résultat enregistré:", data))
+            .catch(err => console.error("Erreur update ELO:", err));
+        }
+
+        // Message adapté selon le mode
         if (game.Winner === 1) {
             winMsg.textContent = `${player1} Win a game`
+        } else if (gameMode === "bot") {
+            winMsg.textContent = `🤖 Bot Level ${botLevel} Win a game`
         } else {
             winMsg.textContent = "Player 2 Win a game"
         }
-        
+
         document.querySelector('.win-banner-overlay').style.display = 'flex';
 
     }

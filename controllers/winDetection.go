@@ -4,7 +4,7 @@ import (
 	"power4/models"
 )
 
-func verifWin(cols [][]int, player int, col int, row int) bool {
+func VerifWin(cols [][]int, player int, col int, row int) bool {
 	grid := [][2]int{
 		{1, 0},  // horizontal
 		{0, 1},  // vertical

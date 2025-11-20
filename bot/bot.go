@@ -9,7 +9,7 @@ func BotMove(game *models.GridPage, level int , player int) int {
 	case 1:
 		return Lvl1Bot(game, player)
 	case 2:
-		return Lvl1Bot(game, player) // TODO: Mettre le niv 2
+		return Lvl2Bot(game, player) // TODO: Mettre le niv 2
 	case 3:
 		return Lvl1Bot(game, player) // TODO: Mettre le niv 3
 	case 4:

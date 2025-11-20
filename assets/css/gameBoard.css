@@ -1,16 +1,208 @@
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Jolly+Lodger&family=Metal+Mania&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Jolly+Lodger&family=Metal+Mania&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Oswald:wght@400;500&display=swap');
+
+:root {
+    --card-bg: #2a2433;
+    --accent-orange: #ff8a00;
+    --text-white: #ffffff;
+    --text-dim: #ffffffcc;
+    --glow-color: rgba(255, 140, 0, 0.35);
+    --shadow-dark: rgba(0, 0, 0, 0.55);
+    --font-horror: 'Creepster', cursive;
+    --font-ui: 'Oswald', sans-serif;
+    --skew-angle: 6deg; 
+    --skew-compensation: 20px; 
+}
 
 body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 95vh;
+    height: 100vh;
     background: #ad1d1d;
     background-image: url("/assets/images/bg-game.png");
     background-position: center;
     background-size: cover;
     font-family: Arial, sans-serif;
+    overflow: hidden;
+    margin: 0;
+}
+
+.ui-hud-layer {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 50;
+    pointer-events: none; 
+    box-sizing: border-box;
+}
+
+.turn-hud-layer1 {
+    position: absolute;
+    top: 150px;
+    left: 40px;
+    width: 100%;
+    display: flex;
+    z-index: 49;
+    pointer-events: none;
+}
+
+.turn-hud-layer2 {
+    position: absolute;
+    top: 150px;
+    right: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 49;
+    pointer-events: none;
+}
+
+.player-card {
+    pointer-events: auto;
+    width: 420px;
+    background-color: var(--card-bg);
+    border-radius: 24px;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transform: scale(0.9);
+    transform-origin: top left;
+}
+
+.player-card.p2-card {
+    transform-origin: top right;
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.avatar-container {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #1a1620;
+    border: 2px solid #3a3444;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.player-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.player-card.p2-card .player-info {
+    align-items: flex-end;
+}
+
+.player-name {
+    color: var(--text-white);
+    font-size: 36px;
+    font-family: var(--font-horror);
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+.timer-label {
+    color: var(--text-dim);
+    font-size: 18px;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: var(--font-ui);
+    font-weight: 500;
+}
+
+.progress-track {
+    width: 100%;
+    height: 12px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 65%;
+    background-color: var(--accent-orange);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 138, 0, 0.4);
+}
+
+.turn-card1 {
+    pointer-events: auto;
+    background-color: var(--card-bg);
+    transform: skewX(var(--skew-angle)); 
+    width: 420px;
+    border-radius: 20px;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 
+        0 0 45px var(--glow-color),
+        0 15px 25px var(--shadow-dark),
+        inset 0 0 0 1px rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.turn-card2 {
+    pointer-events: auto;
+    background-color: var(--card-bg);
+    transform: skewX(var(--skew-angle)); 
+    width: 420px;
+    border-radius: 20px;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 
+        0 0 45px var(--glow-color),
+        0 15px 25px var(--shadow-dark),
+        inset 0 0 0 1px rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.turn-text1 {
+    transform: skewX(calc(var(--skew-angle) * -1));
+    color: var(--text-white);
+    font-size: 45px;
+    font-family: var(--font-horror);
+    line-height: 1;
+    margin: 0;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+    white-space: nowrap;
+}
+
+.turn-text2 {
+    transform: skewX(calc(var(--skew-angle) * -1));
+    color: var(--text-white);
+    font-size: 45px;
+    font-family: var(--font-horror);
+    line-height: 1;
+    margin: 0;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+    white-space: nowrap;
 }
 
 .grille {
@@ -22,7 +214,8 @@ body {
     padding: 10px;
     border-radius: 10px;
     position: relative;
-    margin-top: 15rem;
+    margin-top: 15rem; 
+    z-index: 5;
 }
 
 .grille::before {
@@ -86,6 +279,7 @@ body {
 .hover-orange.hoverNextTurn {
     background-image: url("/assets/images/token_pumkin.png");
 }
+
 
 .button-with-icon {
     display: flex;
@@ -188,7 +382,7 @@ body {
     height: 100vh;
     background: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(8px);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;

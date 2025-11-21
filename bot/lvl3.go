@@ -4,9 +4,9 @@ import (
 	"power4/models"
 )
 
-// Lvl2Bot implements minimax with alpha-beta pruning (depth 4)
+// Lvl3Bot implements minimax with alpha-beta pruning (depth 4)
 func Lvl3Bot(game *models.GridPage , player int) int {
-	depth := 8
+	depth := 4
 	validMoves := GetValideMoves(game)
 	opponent := GetNextPlayer(player)
 

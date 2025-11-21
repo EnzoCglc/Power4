@@ -44,34 +44,28 @@
         </div>
 
         <div class="level-selection" id="level-selection">
-            <h2>Select Level</h2>
+            <h2>Select Bot Level</h2>
             <div class="levels-grid">
 
-                <form action="/game/solo" method="post">
-                    <input type="hidden" name="play" value="startGame">
-                    <input type="hidden" name="lvl" value="1">
-                    <div class="level-item"><button class="level-circle" type="submit">1</button></div>
-                </form>
+                <a href="/game/bot?level=1">
+                    <div class="level-item"><button class="level-circle" type="button">1</button></div>
+                </a>
 
-                <form action="/game" method="post">
-                    <input type="hidden" name="play" value="startGame">
-                    <div class="level-item"><button class="level-circle" type="submit">2</button></div>
-                </form>
+                <a href="/game/bot?level=2">
+                    <div class="level-item"><button class="level-circle" type="button">2</button></div>
+                </a>
 
-                <form action="/game" method="post">
-                    <input type="hidden" name="play" value="startGame">
-                    <div class="level-item"><button class="level-circle" type="submit">3</button></div>
-                </form>
+                <a href="/game/bot?level=3">
+                    <div class="level-item"><button class="level-circle" type="button">3</button></div>
+                </a>
 
-                <form action="/game" method="post">
-                    <input type="hidden" name="play" value="startGame">
-                    <div class="level-item"><button class="level-circle" type="submit">4</button></div>
-                </form>
+                <a href="/game/bot?level=4">
+                    <div class="level-item"><button class="level-circle" type="button">4</button></div>
+                </a>
 
-                <form action="/game" method="post">
-                    <input type="hidden" name="play" value="startGame">
-                    <div class="level-item"><button class="level-circle" type="submit">5</button></div>
-                </form>
+                <a href="/game/bot?level=5">
+                    <div class="level-item"><button class="level-circle" type="button">5</button></div>
+                </a>
             </div>
         </div>
     </div>

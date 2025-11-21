@@ -11,7 +11,7 @@ func play(game *models.GridPage, col int) error {
 		return err
 	}
 
-	row := findAvailableRow(game.Columns, col)
+	row := FindAvailableRow(game.Columns, col)
 	if row == -1 {
 		return errors.New("colonne pleine")
 	}
@@ -31,7 +31,7 @@ func validateMove(game *models.GridPage, col int) error {
 	return nil
 }
 
-func findAvailableRow(cols [][]int, col int) int {
+func FindAvailableRow(cols [][]int, col int) int {
 	for row := models.Rows - 1; row >= 0; row-- {
 		if cols[col][row] == models.Empty {
 			return row
@@ -47,7 +47,7 @@ func setPiece(game *models.GridPage, col, row int) {
 func handlePostMove(game *models.GridPage, col, row int) {
 	player := game.CurrentTurn
 
-	if verifWin(game.Columns, player, col, row) {
+	if VerifWin(game.Columns, player, col, row) {
 		setWinner(game, player)
 		return
 	}

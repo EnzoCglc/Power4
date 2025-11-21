@@ -16,6 +16,10 @@ func SetupRoutes() {
 	http.HandleFunc("/game/duo", controllers.GameDuo)
 	http.HandleFunc("/game", controllers.SwitchPlay)
 
+	//Connect bot game
+	http.HandleFunc("/game/bot", controllers.GameBot)
+	http.HandleFunc("/game/bot/play", controllers.SwitchPlayBot)
+
 	//Result game
 	http.HandleFunc("/game/result", controllers.GameResult)
 

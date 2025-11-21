@@ -266,3 +266,8 @@ body {
     box-shadow: 9px 9px 33px black, -9px -9px 33px #F28C28;
     transform: translateY(-2px);
 }
+
+a {
+    color: inherit;
+    text-decoration: none;
+}

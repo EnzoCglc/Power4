@@ -1,5 +1,7 @@
 let currentTurn = window.gameState.currentTurn;
 let player1 = window.gameState.player1;
+let gameMode = window.gameState.gameMode || "duo";
+let botLevel = window.gameState.botLevel || 0;
 let Finish = false;
 
 // Fonction pour mettre à jour l'affichage du joueur actif
@@ -47,8 +49,9 @@ document.querySelectorAll('.colonne').forEach(col => {
 });
 
 function playColumn(colIndex) {
-   
-    fetch('/game', {
+    const endpoint = gameMode === "bot" ? '/game/bot/play' : '/game';
+
+    fetch(endpoint, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -113,28 +116,35 @@ function updateGrid(game) {
     });
     if (Finish === true) {
         const winMsg = document.getElementById('win-msg');
-        const body = {
-            winner: game.Winner,
-            player1: player1,
-            player2: "player2",
-            isDraw: game.isDraw
-        };
 
-        fetch('/game/result', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)    
-        })
-        .then(res => res.json())
-        .then(data => console.log("Résultat enregistré:", data))
-        .catch(err => console.error("Erreur update ELO:", err));
-        
+        // Ne sauvegarder le résultat que pour le mode duo
+        if (gameMode === "duo") {
+            const body = {
+                winner: game.Winner,
+                player1: player1,
+                player2: "player2",
+                isDraw: game.isDraw
+            };
+
+            fetch('/game/result', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+            .then(res => res.json())
+            .then(data => console.log("Résultat enregistré:", data))
+            .catch(err => console.error("Erreur update ELO:", err));
+        }
+
+        // Message adapté selon le mode
         if (game.Winner === 1) {
             winMsg.textContent = `${player1} Win a game`
+        } else if (gameMode === "bot") {
+            winMsg.textContent = `Bot Level ${botLevel} Win a game`
         } else {
             winMsg.textContent = "Player 2 Win a game"
         }
-        
+
         document.querySelector('.win-banner-overlay').style.display = 'flex';
 
     }

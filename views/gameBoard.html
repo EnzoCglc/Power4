@@ -107,9 +107,11 @@
 
   <script>
     // Exposer les données du backend au JavaScript
-    window.gameState = { 
-      currentTurn: {{.CurrentGame.CurrentTurn}},
-      player1: "{{.Player1}}"
+    window.gameState = {
+      currentTurn: parseInt("{{.CurrentGame.CurrentTurn}}") || 1,
+      player1: "{{.Player1}}",
+      gameMode: "{{.CurrentGame.GameMode}}" || "duo",
+      botLevel: parseInt("{{.CurrentGame.BotLvl}}") || 0
     };
   </script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

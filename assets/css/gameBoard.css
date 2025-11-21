@@ -313,9 +313,6 @@ body {
 }
 
 .reset-button {
-    position: absolute;
-    top: 420px;
-    left: 250px;
     z-index: 10;
 }
 

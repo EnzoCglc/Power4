@@ -119,7 +119,7 @@ function updateGrid(game) {
         if (game.Winner === 1) {
             winMsg.textContent = `${player1} Win a game`
         } else if (gameMode === "bot") {
-            winMsg.textContent = `🤖 Bot Level ${botLevel} Win a game`
+            winMsg.textContent = `Bot Level ${botLevel} Win a game`
         } else {
             winMsg.textContent = "Player 2 Win a game"
         }

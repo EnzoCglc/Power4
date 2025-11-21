@@ -2,6 +2,23 @@ let currentTurn = window.gameState.currentTurn;
 let player1 = window.gameState.player1;
 let Finish = false;
 
+// Fonction pour mettre à jour l'affichage du joueur actif
+function updatePlayerIndicator(turn) {
+    const turnLayer1 = document.querySelector('.turn-hud-layer1');
+    const turnLayer2 = document.querySelector('.turn-hud-layer2');
+
+    if (turn === 1) {
+        turnLayer1.style.display = 'flex';
+        turnLayer2.style.display = 'none';
+    } else {
+        turnLayer1.style.display = 'none';
+        turnLayer2.style.display = 'flex';
+    }
+}
+
+// Initialiser l'affichage au chargement
+updatePlayerIndicator(currentTurn);
+
 document.querySelectorAll('.colonne').forEach(col => {
     col.addEventListener('mouseenter', () => {
         col.querySelectorAll('.cellule').forEach(cell => {
@@ -12,7 +29,7 @@ document.querySelectorAll('.colonne').forEach(col => {
                 if (Finish === true){
                     cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
                 } else {
-                    if (window.gameState.currentTurn === 1){
+                    if (currentTurn === 1){
                         cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
                     } else {
                         cell_to_hightlight.classList.add('hover-orange','hoverNextTurn');
@@ -84,8 +101,12 @@ function updateGrid(game) {
             }
         });
     });
-    window.gameState.currentTurn = game.CurrenctTurn;
+    window.gameState.currentTurn = game.CurrentTurn;
+    currentTurn = game.CurrentTurn;
     Finish = game.GameOver;
+
+    // Mettre à jour l'indicateur du joueur actif
+    updatePlayerIndicator(currentTurn);
 
     document.querySelectorAll('.cellule').forEach(cell => {
         cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');

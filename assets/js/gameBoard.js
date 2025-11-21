@@ -30,9 +30,9 @@ document.querySelectorAll('.colonne').forEach(col => {
                     cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
                 } else {
                     if (currentTurn === 1){
-                        cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
-                    } else {
                         cell_to_hightlight.classList.add('hover-orange','hoverNextTurn');
+                    } else {
+                        cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
                     };
                 }
             };
@@ -77,9 +77,9 @@ function dropToken(colIndex, rowIndex, player) {
     Cell.classList.remove('black', 'orange', 'animate-drop');
 
     if (player === 1) {
-        Cell.classList.add('black', 'animate-drop');
-    } else {
         Cell.classList.add('orange', 'animate-drop');
+    } else {
+        Cell.classList.add('black', 'animate-drop');
     }
 
     Cell.addEventListener('animationEnd', () => {

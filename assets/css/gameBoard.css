@@ -505,3 +505,46 @@ body {
         opacity: 1;
     }
 }
+
+.ranked-stats {
+    font-family: "Inter", sans-serif;
+    margin-top: 4px;
+}
+
+/* Ligne plus compacte + alignement propre */
+.stat-line {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin: 1px 0;
+}
+
+/* Labels plus doux */
+.stat-label {
+    font-size: 14px;
+    color: #bdbdbd;
+    letter-spacing: 0.3px;
+}
+
+/* Valeurs mises en avant */
+.stat-value {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+/* Couleur ELO */
+.stat-value.elo {
+    color: #ffa500;
+    text-shadow: 0 0 3px #ffa50055;
+}
+
+/* Winrate dynamique */
+.stat-value.high {
+    color: #4cd964;
+    text-shadow: 0 0 3px #4cd96455;
+}
+
+.stat-value.low {
+    color: #ff4e4e;
+    text-shadow: 0 0 3px #ff4e4e55;
+}

@@ -22,20 +22,42 @@
             </div>
             <div class="player-info">
                 <div class="player-name">{{.Player1}}</div>
-                <div class="timer-label">Time left : 10sec</div>
-                <div class="progress-track">
-                    <div class="progress-fill"></div>
-                </div>
+                {{if .CurrentGame.Ranked}}
+                    <div class="ranked-stats">
+                        <div class="stat-line">
+                            <span class="stat-label">ELO</span>
+                            <span class="stat-value elo">{{if .User}}{{.User.Elo}}{{else}}0{{end}}</span>
+                        </div>
+
+                        <div class="stat-line">
+                            <span class="stat-label">Win Rate</span>
+                            <span class="stat-value win {{if lt .WinRate 50.0}}low{{else}}high{{end}}">
+                                {{if .WinRate}}{{printf "%.1f" .WinRate}}{{else}}0.0{{end}}%
+                            </span>
+                        </div>
+                    </div>
+                {{end}}
             </div>
         </div>
 
         <div class="player-card p2-card">
             <div class="player-info" style="align-items: flex-end; text-align: right;">
-                <div class="player-name">PLAYER 2</div>
-                <div class="timer-label">Time left : 10sec</div>
-                <div class="progress-track">
-                    <div class="progress-fill"></div>
-                </div>
+                <div class="player-name">{{if .Player2}}{{.Player2}}{{else}}PLAYER 2{{end}}</div>
+                {{if .CurrentGame.Ranked}}
+                    <div class="ranked-stats">
+                        <div class="stat-line">
+                            <span class="stat-label">ELO</span>
+                            <span class="stat-value elo">{{if .User2}}{{.User2.Elo}}{{else}}0{{end}}</span>
+                        </div>
+
+                        <div class="stat-line">
+                            <span class="stat-label">Win Rate</span>
+                            <span class="stat-value win {{if lt .WinRate2 50.0}}low{{else}}high{{end}}">
+                                {{if .WinRate2}}{{printf "%.1f" .WinRate2}}{{else}}0.0{{end}}%
+                            </span>
+                        </div>
+                    </div>
+                {{end}}
             </div>
             <div class="avatar-container">
                 <img class="avatar-img" viewBox="0 0 100 100" src="/assets/images/reaper_token.png">

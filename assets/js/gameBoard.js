@@ -8,13 +8,14 @@ let Finish = false;
 function updatePlayerIndicator(turn) {
     const turnLayer1 = document.querySelector('.turn-hud-layer1');
     const turnLayer2 = document.querySelector('.turn-hud-layer2');
-
-    if (turn === 1) {
-        turnLayer1.style.display = 'flex';
-        turnLayer2.style.display = 'none';
-    } else {
-        turnLayer1.style.display = 'none';
-        turnLayer2.style.display = 'flex';
+    if (gameMode === "duo") {
+        if (turn === 1) {
+            turnLayer1.style.display = 'flex';
+            turnLayer2.style.display = 'none';
+        } else {
+            turnLayer1.style.display = 'none';
+            turnLayer2.style.display = 'flex';
+        }
     }
 }
 

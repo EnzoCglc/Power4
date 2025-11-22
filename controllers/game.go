@@ -11,22 +11,7 @@ import (
 func GameDuo(w http.ResponseWriter, r *http.Request) {
 	reset(models.CurrentGame)
 	models.CurrentGame.GameMode = "duo"
-
-	var rankedValue string
-
-	switch r.Method {
-	case "POST":	rankedValue = r.FormValue("ranked")
-	case "GET":
-		rankedValue = r.URL.Query().Get("ranked")
-	default:
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed) 
-	}
-
-	if rankedValue == "true" {
-	models.CurrentGame.Ranked = true
-	} else {
 	models.CurrentGame.Ranked = false
-	}
 
 	cookie , err := r.Cookie("username")
 	if err != nil {
@@ -43,43 +28,11 @@ func GameDuo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Calculer le winrate du Player 1
-	totalGames := user.Win + user.Losses
-	var winRate float64
-	if totalGames > 0 {
-		winRate = (float64(user.Win) / float64(totalGames)) * 100
-	}
-
-	// Préparer les données de base
 	data := map[string]interface{}{
 		"CurrentGame": models.CurrentGame,
 		"Player1":     user.Username,
-		"User":        user,
-		"WinRate":     winRate,
-		"TotalGames":  totalGames,
 	}
 
-	if models.CurrentGame.Ranked {
-		player2, err := models.GetUserByUsername("player2")
-		if err != nil || player2 == nil {
-			log.Println("Player 2 not found in database, using default values")
-		} else {
-			totalGames2 := player2.Win + player2.Losses
-			var winRate2 float64
-			if totalGames2 > 0 {
-				winRate2 = (float64(player2.Win) / float64(totalGames2)) * 100
-			}
-			data["Player2"] = player2.Username
-			data["User2"] = player2
-			data["WinRate2"] = winRate2
-			data["TotalGames2"] = totalGames2
-		}
-	} else {
-		data["Player2"] = "Player 2"
-	}
-
-	log.Printf("User data - Username: %s, Elo: %d, Win: %d, Losses: %d, WinRate: %.1f%%",
-		user.Username, user.Elo, user.Win, user.Losses, winRate)
 	utils.Render(w, "gameBoard.html", data)
 	log.Println("Duo mod active for : ", user.Username)
 }

@@ -179,3 +179,14 @@ function unlockAudio() {
 }
 
 window.addEventListener('pointerdown', unlockAudio, { once: true });
+
+// Retry the game by reloading the current page with existing query parameters
+function retry() {
+    const url = new URL(window.location.href);
+    const path = url.pathname;
+    const params = url.searchParams.toString();
+
+    const retryUrl = params ? `${path}?${params}` : path;
+
+    window.location.href = retryUrl;
+}

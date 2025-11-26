@@ -4,8 +4,8 @@ import (
 	"power4/models"
 )
 
-// Lvl3Bot implements minimax with alpha-beta pruning (depth 4)
-func Lvl3Bot(game *models.GridPage , player int) int {
+// Lvl3Bot implements minimax AI with alpha-beta pruning at depth 4.
+func Lvl3Bot(game *models.GridPage, player int) int {
 	depth := 4
 	validMoves := GetValideMoves(game)
 	opponent := GetNextPlayer(player)

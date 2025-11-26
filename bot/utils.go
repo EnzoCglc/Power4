@@ -4,6 +4,7 @@ import (
 	"power4/models"
 )
 
+// GetValideMoves returns a list of all columns that aren't full.
 func GetValideMoves(game *models.GridPage) []int {
 	validMoves := []int{}
 	for col := 0; col < models.Cols; col++ {
@@ -14,6 +15,7 @@ func GetValideMoves(game *models.GridPage) []int {
 	return validMoves
 }
 
+// findAvailableRow finds the lowest empty row in a column.
 func findAvailableRow(cols [][]int, col int) int {
 	for row := models.Rows - 1; row >= 0; row-- {
 		if cols[col][row] == models.Empty {
@@ -23,6 +25,7 @@ func findAvailableRow(cols [][]int, col int) int {
 	return -1
 }
 
+// SimulateMove places a piece on the board.
 func SimulateMove(game *models.GridPage, col int, player int) int {
 	row := findAvailableRow(game.Columns, col)
 	if row != -1 {
@@ -31,12 +34,14 @@ func SimulateMove(game *models.GridPage, col int, player int) int {
 	return row
 }
 
-func UndoMove(game *models.GridPage, col int , row int){
+// UndoMove removes a piece from the board to restore previous state.
+func UndoMove(game *models.GridPage, col int, row int) {
 	if row != -1 {
 		game.Columns[col][row] = models.Empty
 	}
 }
 
+// verifWin checks if a player has 4 in a row from a specific position.
 func verifWin(cols [][]int, player int, col int, row int) bool {
 	grid := [][2]int{
 		{1, 0},  // horizontal
@@ -57,6 +62,7 @@ func verifWin(cols [][]int, player int, col int, row int) bool {
 	return false
 }
 
+// countDirection counts consecutive pieces in a specific direction.
 func countDirection(cols [][]int, player int, col int, row int, dc int, dr int) int {
 	c := col + dc
 	r := row + dr
@@ -69,6 +75,7 @@ func countDirection(cols [][]int, player int, col int, row int, dc int, dr int) 
 	return count
 }
 
+// CheckWin is a wrapper for verifWin that handles invalid row indices.
 func CheckWin(game *models.GridPage, player int, col int, row int) bool {
 	if row == -1 {
 		return false
@@ -76,6 +83,7 @@ func CheckWin(game *models.GridPage, player int, col int, row int) bool {
 	return verifWin(game.Columns, player, col, row)
 }
 
+// GetNextPlayer returns the opponent's player ID.
 func GetNextPlayer(currentplayer int) int {
 	if currentplayer == models.P1 {
 		return models.P2
@@ -83,6 +91,7 @@ func GetNextPlayer(currentplayer int) int {
 	return models.P1
 }
 
+// IsBoardFull checks if the game board has no more available moves.
 func IsBoardFull(game *models.GridPage) bool {
 	for col := 0; col < models.Cols; col++ {
 		if game.Columns[col][0] == models.Empty {

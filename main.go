@@ -9,14 +9,14 @@ import (
 )
 
 func main() {
-	// Init Database
+	// Initialize the database connection and create tables if they don't exist
 	database.InitDB()
 	defer models.DB.Connect.Close()
 
-	// Setup routes
+	// Register all HTTP handlers for the application
 	routes.SetupRoutes()
 
-	// Start Server on localhost:8080
+	// Start the HTTP server and listen for incoming requests
 	log.Print("Listening on localhost:8080...")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

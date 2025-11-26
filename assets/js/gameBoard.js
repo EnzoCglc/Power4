@@ -1,13 +1,15 @@
-let currentTurn = window.gameState.currentTurn;
-let player1 = window.gameState.player1;
-let gameMode = window.gameState.gameMode || "duo";
-let botLevel = window.gameState.botLevel || 0;
-let Finish = false;
+// Game state variables initialized from server
+let currentTurn = window.gameState.currentTurn;  // Current player's turn (1 or 2)
+let player1 = window.gameState.player1;          // Player 1's username
+let gameMode = window.gameState.gameMode || "duo"; // Game mode: "duo" or "bot"
+let botLevel = window.gameState.botLevel || 0;   // Bot difficulty level (1-5)
+let Finish = false;                              // Whether the game has ended
 
-// Fonction pour mettre à jour l'affichage du joueur actif
+// Updates the turn indicator display to show whose turn it is
 function updatePlayerIndicator(turn) {
     const turnLayer1 = document.querySelector('.turn-hud-layer1');
     const turnLayer2 = document.querySelector('.turn-hud-layer2');
+
     if (gameMode === "duo") {
         if (turn === 1) {
             turnLayer1.style.display = 'flex';
@@ -19,29 +21,31 @@ function updatePlayerIndicator(turn) {
     }
 }
 
-// Initialiser l'affichage au chargement
+// Initialize the turn indicator display on page load
 updatePlayerIndicator(currentTurn);
-
 document.querySelectorAll('.colonne').forEach(col => {
     col.addEventListener('mouseenter', () => {
         col.querySelectorAll('.cellule').forEach(cell => {
             if (!cell.classList.contains('black') && !cell.classList.contains('orange')) {
+                // Count empty cells to find where piece would land
                 let nb_cell = col.querySelectorAll('.cellule').length - col.querySelectorAll('.black, .orange').length;
-                let nb_cell_to_highlight = nb_cell -1;
+                let nb_cell_to_highlight = nb_cell - 1;
                 let cell_to_hightlight = col.querySelectorAll('.cellule')[nb_cell_to_highlight];
-                if (Finish === true){
+
+                // Only show hover effect if game is still ongoing
+                if (Finish === true) {
                     cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
                 } else {
-                    if (currentTurn === 1){
-                        cell_to_hightlight.classList.add('hover-orange','hoverNextTurn');
+                    // Add hover effect in the current player's color
+                    if (currentTurn === 1) {
+                        cell_to_hightlight.classList.add('hover-orange', 'hoverNextTurn');
                     } else {
-                        cell_to_hightlight.classList.add('hover-black','hoverNextTurn');
-                    };
+                        cell_to_hightlight.classList.add('hover-black', 'hoverNextTurn');
+                    }
                 }
-            };
+            }
         });
     });
-
     col.addEventListener('mouseleave', () => {
         col.querySelectorAll('.cellule').forEach(cell => {
             cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
@@ -49,6 +53,7 @@ document.querySelectorAll('.colonne').forEach(col => {
     });
 });
 
+// Submits a move to the server and processes the response
 function playColumn(colIndex) {
     const endpoint = gameMode === "bot" ? '/game/bot/play' : '/game';
 
@@ -61,43 +66,50 @@ function playColumn(colIndex) {
             col: colIndex
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            updateGrid(data.data.game);
-        } else {
-            console.error('Erreur:', error);
-        }
-    })
-    .catch(error => {
-        console.error('Erreur:', error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateGrid(data.data.game);
+            } else {
+                console.error('Error:', error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
+// Animates a piece dropping into a cell
 function dropToken(colIndex, rowIndex, player) {
     const Col = document.querySelectorAll('.colonne')[colIndex];
     const Cell = Col.querySelectorAll('.cellule')[rowIndex];
 
+    // Clear any existing state
     Cell.classList.remove('black', 'orange', 'animate-drop');
 
+    // Add color and animation based on player
     if (player === 1) {
         Cell.classList.add('orange', 'animate-drop');
     } else {
         Cell.classList.add('black', 'animate-drop');
     }
 
+    // Clean up animation class when animation completes
     Cell.addEventListener('animationEnd', () => {
         Cell.classList.remove('animate-drop');
     })
 }
 
+// Updates the visual game board based on server game state
 function updateGrid(game) {
+    // Update the visual board to match server state
     game.Columns.forEach((col, colIndex) => {
         const Col = document.querySelectorAll('.colonne')[colIndex];
 
         col.forEach((cell, rowIndex) => {
             const Cell = Col.querySelectorAll('.cellule')[rowIndex];
 
+            // Only animate pieces that are new (not already on the board)
             if (cell === 1 && !Cell.classList.contains('black')) {
                 dropToken(colIndex, rowIndex, 1);
             } else if (cell === 2 && !Cell.classList.contains('orange')) {
@@ -105,20 +117,25 @@ function updateGrid(game) {
             }
         });
     });
+
+    // Update local game state variables
     window.gameState.currentTurn = game.CurrentTurn;
     currentTurn = game.CurrentTurn;
     Finish = game.GameOver;
 
-    // Mettre à jour l'indicateur du joueur actif
+    // Update the turn indicator to show whose turn it is
     updatePlayerIndicator(currentTurn);
 
+    // Clear any hover effects from the board
     document.querySelectorAll('.cellule').forEach(cell => {
         cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
     });
+
+    // Handle game-over state
     if (Finish === true) {
         const winMsg = document.getElementById('win-msg');
 
-        // Ne sauvegarder le résultat que pour le mode duo
+        // Bot games don't affect ELO in duo mode, only in ranked bot mode
         if (gameMode === "duo") {
             const body = {
                 winner: game.Winner,
@@ -132,12 +149,12 @@ function updateGrid(game) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             })
-            .then(res => res.json())
-            .then(data => console.log("Résultat enregistré:", data))
-            .catch(err => console.error("Erreur update ELO:", err));
+                .then(res => res.json())
+                .then(data => console.log("Result saved:", data))
+                .catch(err => console.error("Error updating ELO:", err));
         }
 
-        // Message adapté selon le mode
+        // Display appropriate win message based on game mode and winner
         if (game.Winner === 1) {
             winMsg.textContent = `${player1} Win a game`
         } else if (gameMode === "bot") {
@@ -146,21 +163,20 @@ function updateGrid(game) {
             winMsg.textContent = "Player 2 Win a game"
         }
 
+        // Show the win banner overlay
         document.querySelector('.win-banner-overlay').style.display = 'flex';
-
     }
 }
 
+// Hide the win banner initially (shown only when game ends)
 document.querySelector('.win-banner-overlay').style.display = 'none';
 
-    
 const bg = document.getElementById('bg');
-
 function unlockAudio() {
-  if (bg.muted) {
-    bg.muted = false;
-  }
-  bg.play().catch(err => console.warn('play blocked:', err));
+    if (bg.muted) {
+        bg.muted = false;
+    }
+    bg.play().catch(err => console.warn('Audio playback blocked:', err));
 }
 
 window.addEventListener('pointerdown', unlockAudio, { once: true });

@@ -6,39 +6,34 @@ import (
 )
 
 func SetupRoutes() {
-	// Connect landing Page
-	http.HandleFunc("/", controllers.Home)
+	// Main pages
+	http.HandleFunc("/", controllers.Home)                  // Landing page
+	http.HandleFunc("/gamemode", controllers.GameMode)      // Game mode selection
 
-	//Connect Gamemode
-	http.HandleFunc("/gamemode", controllers.GameMode)
+	// Duo mode (local multiplayer)
+	http.HandleFunc("/game/duo", controllers.GameDuo)       // Initialize duo game
+	http.HandleFunc("/game", controllers.SwitchPlay)        // Process moves in duo mode
 
-	//Connect game function
-	http.HandleFunc("/game/duo", controllers.GameDuo)
-	http.HandleFunc("/game", controllers.SwitchPlay)
+	// Bot mode (single player vs AI)
+	http.HandleFunc("/game/bot", controllers.GameBot)       // Initialize bot game
+	http.HandleFunc("/game/bot/play", controllers.SwitchPlayBot)  // Process moves in bot mode
 
-	//Connect bot game
-	http.HandleFunc("/game/bot", controllers.GameBot)
-	http.HandleFunc("/game/bot/play", controllers.SwitchPlayBot)
+	// Game results API
+	http.HandleFunc("/game/result", controllers.GameResult) // Process game completion and ELO
 
-	//Result game
-	http.HandleFunc("/game/result", controllers.GameResult)
+	// Authentication routes
+	http.HandleFunc("/signin", controllers.LoginPage)       // Display login form
+	http.HandleFunc("/login", controllers.LoginInfo)        // Process login submission
+	http.HandleFunc("/signup", controllers.RegisterPage)    // Display registration form
+	http.HandleFunc("/register", controllers.RegisterInfo)  // Process registration submission
+	http.HandleFunc("/logout", controllers.Logout)          // Clear session and logout
 
-	//Connect LoginPage
-	http.HandleFunc("/signin", controllers.LoginPage)
-	http.HandleFunc("/login", controllers.LoginInfo)
+	// User profile routes
+	http.HandleFunc("/profil", controllers.Profil)          // Display user profile
+	http.HandleFunc("/profil/update-password", controllers.NewPassword)  // Change password
 
-	//Connect RegisterPage
-	http.HandleFunc("/signup", controllers.RegisterPage)
-	http.HandleFunc("/register", controllers.RegisterInfo)
-
-	//Connect Profil Page
-	http.HandleFunc("/profil", controllers.Profil)
-	http.HandleFunc("/profil/update-password", controllers.NewPassword)
-
-	//Logout
-	http.HandleFunc("/logout", controllers.Logout)
-
-	// Use FileServer to serve static assets like .png or css
+	// Static file server for CSS, JS, images, etc.
+	// Serves files from ./assets directory at /assets/ URL path
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 }

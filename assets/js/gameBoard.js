@@ -135,24 +135,23 @@ function updateGrid(game) {
     if (Finish === true) {
         const winMsg = document.getElementById('win-msg');
 
-        // Bot games don't affect ELO in duo mode, only in ranked bot mode
-        if (gameMode === "duo") {
-            const body = {
-                winner: game.Winner,
-                player1: player1,
-                player2: "player2",
-                isDraw: game.isDraw
-            };
+        // Send game result to server for both duo and bot modes
+        // Server will decide whether to update ELO based on ranked status
+        const body = {
+            winner: game.Winner,
+            player1: player1,
+            player2: "player2",
+            isDraw: game.IsDraw
+        };
 
-            fetch('/game/result', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            })
-                .then(res => res.json())
-                .then(data => console.log("Result saved:", data))
-                .catch(err => console.error("Error updating ELO:", err));
-        }
+        fetch('/game/result', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+            .then(res => res.json())
+            .then(data => console.log("Result saved:", data))
+            .catch(err => console.error("Error updating ELO:", err));
 
         // Display appropriate win message based on game mode and winner
         if (game.Winner === 1) {

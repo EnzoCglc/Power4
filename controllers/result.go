@@ -67,25 +67,26 @@ func decodeBody(r *http.Request) (*gameResultBody, error) {
 func processResult(body *gameResultBody) (*eloResult, error) {
 	// Skip processing if the game was a draw
 	if body.IsDraw {
-		log.Println("[DEBUG] Match is draw, skipping ELO.")
 		return nil, errors.New("draw game, no ELO change")
 	}
 
 	// Determine winner and loser based on the Winner ID
 	winnerName, loserName := getResult(body)
 	if winnerName == "" || loserName == "" {
-		log.Println("[DEBUG] Invalid players (empty names)")
 		return nil, errors.New("invalid players: winner/loser missing")
 	}
 
 	// Fetch user data from database
 	winner, err := models.GetUserByUsername(winnerName)
-	if err != nil {
-		log.Printf("[DEBUG] Error fetching winner (%s): %v", winnerName, err)
+	if err != nil || winner == nil {
+		log.Printf("Error fetching winner (%s): %v", winnerName, err)
+		return nil, errors.New("failed to fetch winner from database")
 	}
+
 	loser, err := models.GetUserByUsername(loserName)
-	if err != nil {
-		log.Printf("[DEBUG] Error fetching loser (%s): %v", loserName, err)
+	if err != nil || loser == nil {
+		log.Printf("Error fetching loser (%s): %v", loserName, err)
+		return nil, errors.New("failed to fetch loser from database")
 	}
 
 	// Calculate ELO changes (modifies user structs in-place)
@@ -93,18 +94,19 @@ func processResult(body *gameResultBody) (*eloResult, error) {
 
 	// Persist updated ELO and stats to database
 	if err := models.UpdateUserEloAndStats(winner); err != nil {
-		log.Println("[DEBUG] Failed to update winner ELO:", err)
+		log.Println("Failed to update winner ELO:", err)
+		return nil, errors.New("failed to update winner in database")
 	}
+
 	if err := models.UpdateUserEloAndStats(loser); err != nil {
-		log.Println("[DEBUG] Failed to update loser ELO:", err)
+		log.Println("Failed to update loser ELO:", err)
+		return nil, errors.New("failed to update loser in database")
 	}
 
 	// Record match in history table
 	if err := models.InsertHistory(winner.Username, loser.Username, winner.Username, delta, models.CurrentGame.Ranked); err != nil {
-		log.Println("[DEBUG] Failed to insert match history:", err)
-	} else {
-		log.Printf("[DEBUG] History inserted for match %s vs %s | Winner=%s | Δ=%d",
-			winner.Username, loser.Username, winner.Username, delta)
+		log.Println("Failed to insert match history:", err)
+		return nil, errors.New("failed to insert match history")
 	}
 
 	// Return the result containing new ELO ratings
@@ -126,7 +128,7 @@ func getResult(body *gameResultBody) (string, string) {
 	case models.P2:
 		return body.Player2, body.Player1
 	default:
-		log.Println("[DEBUG] Unknown winner ID:", body.Winner)
+		log.Printf("Unknown winner ID: %d", body.Winner)
 		return "", ""
 	}
 }

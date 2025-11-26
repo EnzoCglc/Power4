@@ -39,42 +39,51 @@ function createDoughnutChart() {
 }
 
 function createBarChart() {
-    // Get canvas element and set dimensions
     const canvas = document.getElementById('barChart');
     const ctx = canvas.getContext('2d');
-    const width = 200;
-    const height = 150;
+    const config = setupBarChartCanvas(canvas);
+
+    const data = getBarChartData();
+    ctx.clearRect(0, 0, config.width, config.height);
+
+    drawBars(ctx, data, config);
+    drawBarLabels(ctx, config);
+}
+
+// setupBarChartCanvas initializes canvas dimensions.
+function setupBarChartCanvas(canvas) {
+    const width = 200, height = 150;
     canvas.width = width;
     canvas.height = height;
+    return { width, height, barWidth: 60, spacing: 40 };
+}
 
-    // Extract win/loss data from the DOM
-    const userWin = document.getElementById('victoiresValue').textContent;
-    const userLosses = document.getElementById('defaitesValue').textContent;
-
-    // Calculate scaling based on the maximum value
+// getBarChartData extracts win/loss data from DOM.
+function getBarChartData() {
+    const userWin = parseInt(document.getElementById('victoiresValue').textContent);
+    const userLosses = parseInt(document.getElementById('defaitesValue').textContent);
     const maxValue = Math.max(userWin, userLosses);
-    const barWidth = 60;
-    const spacing = 40;
+    return { userWin, userLosses, maxValue };
+}
 
-    // Clear any previous drawing
-    ctx.clearRect(0, 0, width, height);
-
-    // Draw wins bar (orange, left side)
-    const victoiresHeight = (userWin / maxValue) * 100;
+// drawBars draws the win/loss bars on the canvas.
+function drawBars(ctx, data, config) {
+    const victoiresHeight = (data.userWin / data.maxValue) * 100;
     ctx.fillStyle = '#F28C28';
-    ctx.fillRect(spacing, height - victoiresHeight - 20, barWidth, victoiresHeight);
+    ctx.fillRect(config.spacing, config.height - victoiresHeight - 20, config.barWidth, victoiresHeight);
 
-    // Draw losses bar (dark, right side)
-    const defaitesHeight = (userLosses / maxValue) * 100;
+    const defaitesHeight = (data.userLosses / data.maxValue) * 100;
     ctx.fillStyle = '#1C1A22';
-    ctx.fillRect(spacing + barWidth + 20, height - defaitesHeight - 20, barWidth, defaitesHeight);
+    ctx.fillRect(config.spacing + config.barWidth + 20, config.height - defaitesHeight - 20, config.barWidth, defaitesHeight);
+}
 
-    // Draw labels below each bar
+// drawBarLabels adds text labels below bars.
+function drawBarLabels(ctx, config) {
     ctx.fillStyle = '#ffffffff';
     ctx.font = '12px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Victoires', spacing + barWidth/2, height - 5);
-    ctx.fillText('Défaites', spacing + barWidth + 20 + barWidth/2, height - 5);
+    ctx.fillText('Victoires', config.spacing + config.barWidth/2, config.height - 5);
+    ctx.fillText('Défaites', config.spacing + config.barWidth + 20 + config.barWidth/2, config.height - 5);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

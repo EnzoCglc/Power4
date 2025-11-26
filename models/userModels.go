@@ -105,21 +105,33 @@ func UpdateUserEloAndStats(user *User) error {
 
 // UpdatePassword changes a user's password in the database.
 func UpdatePassword(username, newPasswordHash string) error {
-	// Verify database connection exists
 	if DB == nil || DB.Connect == nil {
 		return sql.ErrConnDone
 	}
 
 	log.Printf("[DB] Updating password for user '%s'\n", username)
 
+	result, err := execPasswordUpdate(username, newPasswordHash)
+	if err != nil {
+		return err
+	}
+
+	return verifyPasswordUpdate(username, result)
+}
+
+// execPasswordUpdate executes the password update query.
+func execPasswordUpdate(username, newPasswordHash string) (sql.Result, error) {
 	query := `UPDATE users SET password_hash = ? WHERE username = ?`
 	result, err := DB.Connect.Exec(query, newPasswordHash, username)
 	if err != nil {
 		log.Printf("[DB] ❌ Password update failed for user '%s': %v\n", username, err)
-		return err
+		return nil, err
 	}
+	return result, nil
+}
 
-	// Verify that a row was actually updated
+// verifyPasswordUpdate verifies that the password update affected a row.
+func verifyPasswordUpdate(username string, result sql.Result) error {
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		return err

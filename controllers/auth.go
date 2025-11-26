@@ -46,42 +46,16 @@ func RegisterPage(w http.ResponseWriter, r *http.Request) {
 
 // RegisterInfo processes the registration form submission and creates a new user account.
 func RegisterInfo(w http.ResponseWriter, r *http.Request) {
-	// Extract form data
 	username := r.FormValue("username")
 	password := r.FormValue("password")
 	confirm := r.FormValue("confirm_password")
 
-	// Validate that passwords match
-	if password != confirm {
-		log.Println("Passwords are not identical")
-		http.Redirect(w, r, "/signup?error=passwords_do_not_match", http.StatusSeeOther)
+	if err := validateRegistration(username, password, confirm); err != nil {
+		http.Redirect(w, r, "/signup?error="+err.Error(), http.StatusSeeOther)
 		return
 	}
 
-	// Enforce minimum password length for security
-	if len(password) < 8 {
-		log.Printf("Password too short for user %s", username)
-		http.Redirect(w, r, "/signup?error=password_too_short", http.StatusSeeOther)
-		return
-	}
-
-	// Check if username is already taken
-	exists, err := verifExists(username)
-	if err != nil {
-		log.Printf("Error checking if user exists: %v", err)
-		http.Redirect(w, r, "/signup?error=database_error", http.StatusSeeOther)
-		return
-	}
-
-	if exists {
-		log.Println("User already exists:", username)
-		http.Redirect(w, r, "/signup?error=username_already_exists", http.StatusSeeOther)
-		return
-	}
-
-	// Create the new user with hashed password
-	err = createUser(username, password)
-	if err != nil {
+	if err := createUser(username, password); err != nil {
 		log.Printf("Error creating user: %v", err)
 		http.Redirect(w, r, "/signup?error=internal_error", http.StatusSeeOther)
 		return
@@ -89,6 +63,40 @@ func RegisterInfo(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Nouveau compte accepté :", username)
 	http.Redirect(w, r, "/signin?success=registration_successful", http.StatusSeeOther)
+}
+
+// validateRegistration validates registration input and checks for existing users.
+func validateRegistration(username, password, confirm string) error {
+	if password != confirm {
+		log.Println("Passwords are not identical")
+		return &validationError{"passwords_do_not_match"}
+	}
+
+	if len(password) < 8 {
+		log.Printf("Password too short for user %s", username)
+		return &validationError{"password_too_short"}
+	}
+
+	exists, err := verifExists(username)
+	if err != nil {
+		log.Printf("Error checking if user exists: %v", err)
+		return &validationError{"database_error"}
+	}
+
+	if exists {
+		log.Println("User already exists:", username)
+		return &validationError{"username_already_exists"}
+	}
+
+	return nil
+}
+
+type validationError struct {
+	key string
+}
+
+func (e *validationError) Error() string {
+	return e.key
 }
 
 // verifExists checks if a username already exists in the database.
@@ -165,49 +173,48 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 // NewPassword handles password change requests from the user profile page.
 func NewPassword(w http.ResponseWriter, r *http.Request) {
-	// Extract form data
 	username := r.FormValue("username")
-	old_password := r.FormValue("old_password")
-	new_password1 := r.FormValue("new_password1")
-	new_password2 := r.FormValue("new_password2")
+	oldPassword := r.FormValue("old_password")
+	newPassword1 := r.FormValue("new_password1")
+	newPassword2 := r.FormValue("new_password2")
 
-	// Verify current password before allowing change
-	err := login(username, old_password)
-	if err != nil {
-		log.Printf("Current password incorrect for user %s: %v", username, err)
-		http.Redirect(w, r, "/profil?error=current_password_incorrect", http.StatusSeeOther)
+	if err := validatePasswordChange(username, oldPassword, newPassword1, newPassword2); err != nil {
+		http.Redirect(w, r, "/profil?error="+err.Error(), http.StatusSeeOther)
 		return
 	}
 
-	// Ensure new passwords match
-	if new_password1 != new_password2 {
-		log.Printf("New passwords do not match for user %s", username)
-		http.Redirect(w, r, "/profil?error=passwords_do_not_match", http.StatusSeeOther)
-		return
-	}
-
-	// Enforce minimum password length
-	if len(new_password1) < 8 {
-		log.Printf("New password too short for user %s", username)
-		http.Redirect(w, r, "/profil?error=password_too_short", http.StatusSeeOther)
-		return
-	}
-
-	// Hash the new password
-	hash, err := bcrypt.GenerateFromPassword([]byte(new_password1), bcrypt.DefaultCost)
+	hash, err := bcrypt.GenerateFromPassword([]byte(newPassword1), bcrypt.DefaultCost)
 	if err != nil {
 		log.Printf("Error hashing password for user %s: %v", username, err)
 		http.Redirect(w, r, "/profil?error=internal_error", http.StatusSeeOther)
 		return
 	}
 
-	// Update the password in the database
-	err = models.UpdatePassword(username, string(hash))
-	if err != nil {
+	if err := models.UpdatePassword(username, string(hash)); err != nil {
 		log.Printf("Error updating password in database for user %s: %v", username, err)
 		http.Redirect(w, r, "/profil?error=database_error", http.StatusSeeOther)
 		return
 	}
 
 	http.Redirect(w, r, "/profil?success=password_updated", http.StatusSeeOther)
+}
+
+// validatePasswordChange validates password change request.
+func validatePasswordChange(username, oldPassword, newPassword1, newPassword2 string) error {
+	if err := login(username, oldPassword); err != nil {
+		log.Printf("Current password incorrect for user %s: %v", username, err)
+		return &validationError{"current_password_incorrect"}
+	}
+
+	if newPassword1 != newPassword2 {
+		log.Printf("New passwords do not match for user %s", username)
+		return &validationError{"passwords_do_not_match"}
+	}
+
+	if len(newPassword1) < 8 {
+		log.Printf("New password too short for user %s", username)
+		return &validationError{"password_too_short"}
+	}
+
+	return nil
 }

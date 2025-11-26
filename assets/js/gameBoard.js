@@ -102,14 +102,22 @@ function dropToken(colIndex, rowIndex, player) {
 
 // Updates the visual game board based on server game state
 function updateGrid(game) {
-    // Update the visual board to match server state
+    updateVisualBoard(game);
+    updateGameState(game);
+    updatePlayerIndicator(currentTurn);
+    clearHoverEffects();
+
+    if (Finish === true) {
+        handleGameOver(game);
+    }
+}
+
+// updateVisualBoard updates the DOM to match game state.
+function updateVisualBoard(game) {
     game.Columns.forEach((col, colIndex) => {
         const Col = document.querySelectorAll('.colonne')[colIndex];
-
         col.forEach((cell, rowIndex) => {
             const Cell = Col.querySelectorAll('.cellule')[rowIndex];
-
-            // Only animate pieces that are new (not already on the board)
             if (cell === 1 && !Cell.classList.contains('black')) {
                 dropToken(colIndex, rowIndex, 1);
             } else if (cell === 2 && !Cell.classList.contains('orange')) {
@@ -117,53 +125,57 @@ function updateGrid(game) {
             }
         });
     });
+}
 
-    // Update local game state variables
+// updateGameState updates local game state variables.
+function updateGameState(game) {
     window.gameState.currentTurn = game.CurrentTurn;
     currentTurn = game.CurrentTurn;
     Finish = game.GameOver;
+}
 
-    // Update the turn indicator to show whose turn it is
-    updatePlayerIndicator(currentTurn);
-
-    // Clear any hover effects from the board
+// clearHoverEffects removes all hover effects from the board.
+function clearHoverEffects() {
     document.querySelectorAll('.cellule').forEach(cell => {
         cell.classList.remove('hoverNextTurn', 'hover-black', 'hover-orange');
     });
+}
 
-    // Handle game-over state
-    if (Finish === true) {
-        const winMsg = document.getElementById('win-msg');
+// handleGameOver manages end-of-game actions.
+function handleGameOver(game) {
+    sendGameResult(game);
+    displayWinMessage(game);
+    document.querySelector('.win-banner-overlay').style.display = 'flex';
+}
 
-        // Send game result to server for both duo and bot modes
-        // Server will decide whether to update ELO based on ranked status
-        const body = {
-            winner: game.Winner,
-            player1: player1,
-            player2: "player2",
-            isDraw: game.IsDraw
-        };
+// sendGameResult sends the result to the server.
+function sendGameResult(game) {
+    const body = {
+        winner: game.Winner,
+        player1: player1,
+        player2: "player2",
+        isDraw: game.IsDraw
+    };
 
-        fetch('/game/result', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        })
-            .then(res => res.json())
-            .then(data => console.log("Result saved:", data))
-            .catch(err => console.error("Error updating ELO:", err));
+    fetch('/game/result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+        .then(res => res.json())
+        .then(data => console.log("Result saved:", data))
+        .catch(err => console.error("Error updating ELO:", err));
+}
 
-        // Display appropriate win message based on game mode and winner
-        if (game.Winner === 1) {
-            winMsg.textContent = `${player1} Win a game`
-        } else if (gameMode === "bot") {
-            winMsg.textContent = `Bot Level ${botLevel} Win a game`
-        } else {
-            winMsg.textContent = "Player 2 Win a game"
-        }
-
-        // Show the win banner overlay
-        document.querySelector('.win-banner-overlay').style.display = 'flex';
+// displayWinMessage shows the appropriate win message.
+function displayWinMessage(game) {
+    const winMsg = document.getElementById('win-msg');
+    if (game.Winner === 1) {
+        winMsg.textContent = `${player1} Win a game`;
+    } else if (gameMode === "bot") {
+        winMsg.textContent = `Bot Level ${botLevel} Win a game`;
+    } else {
+        winMsg.textContent = "Player 2 Win a game";
     }
 }
 

@@ -9,41 +9,46 @@ import (
 func Lvl1Bot(game *models.GridPage, player int) int {
 	validMoves := GetValideMoves(game)
 	if len(validMoves) == 0 {
-		return -1 // No moves available (board full)
+		return -1
 	}
 
 	opponent := GetNextPlayer(player)
-	safeMoves := []int{}
+	safeMoves := filterSafeMoves(game, validMoves, player, opponent)
 
-	// Filter out moves that would allow opponent to win immediately
-	for _, col := range validMoves {
-		row := SimulateMove(game, col, player)
-
-		isSafe := true
-		// Check if opponent can win after this move
-		for _, opCol := range GetValideMoves(game) {
-			opRow := SimulateMove(game, opCol, opponent)
-
-			if CheckWin(game, opponent, opCol, opRow) {
-				isSafe = false // This move leads to opponent's win
-			}
-			UndoMove(game, opCol, opRow)
-			if !isSafe {
-				break // No need to check further
-			}
-		}
-		UndoMove(game, col, row)
-
-		if isSafe {
-			safeMoves = append(safeMoves, col)
-		}
-	}
-
-	// If all moves are unsafe, pick randomly from all moves
 	if len(safeMoves) == 0 {
 		return validMoves[rand.Intn(len(validMoves))]
 	}
 
-	// Pick randomly from safe moves
 	return safeMoves[rand.Intn(len(safeMoves))]
+}
+
+// filterSafeMoves filters out moves that would allow opponent to win.
+func filterSafeMoves(game *models.GridPage, validMoves []int, player, opponent int) []int {
+	safeMoves := []int{}
+
+	for _, col := range validMoves {
+		if isMoveSafe(game, col, player, opponent) {
+			safeMoves = append(safeMoves, col)
+		}
+	}
+
+	return safeMoves
+}
+
+// isMoveSafe checks if a move doesn't lead to opponent's immediate win.
+func isMoveSafe(game *models.GridPage, col, player, opponent int) bool {
+	row := SimulateMove(game, col, player)
+	defer UndoMove(game, col, row)
+
+	for _, opCol := range GetValideMoves(game) {
+		opRow := SimulateMove(game, opCol, opponent)
+		isWin := CheckWin(game, opponent, opCol, opRow)
+		UndoMove(game, opCol, opRow)
+
+		if isWin {
+			return false
+		}
+	}
+
+	return true
 }

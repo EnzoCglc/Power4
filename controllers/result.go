@@ -65,51 +65,76 @@ func decodeBody(r *http.Request) (*gameResultBody, error) {
 
 // processResult handles the complete workflow of processing a game result.
 func processResult(body *gameResultBody) (*eloResult, error) {
-	// Skip processing if the game was a draw
 	if body.IsDraw {
 		return nil, errors.New("draw game, no ELO change")
 	}
 
-	// Determine winner and loser based on the Winner ID
 	winnerName, loserName := getResult(body)
 	if winnerName == "" || loserName == "" {
 		return nil, errors.New("invalid players: winner/loser missing")
 	}
 
-	// Fetch user data from database
+	winner, loser, err := fetchPlayers(winnerName, loserName)
+	if err != nil {
+		return nil, err
+	}
+
+	delta := calculateElo(winner, loser)
+
+	if err := updatePlayersInDB(winner, loser); err != nil {
+		return nil, err
+	}
+
+	if err := saveMatchHistory(winner.Username, loser.Username, delta); err != nil {
+		return nil, err
+	}
+
+	return buildEloResult(winner, loser, delta), nil
+}
+
+// fetchPlayers retrieves both winner and loser from database.
+func fetchPlayers(winnerName, loserName string) (*models.User, *models.User, error) {
 	winner, err := models.GetUserByUsername(winnerName)
 	if err != nil || winner == nil {
 		log.Printf("Error fetching winner (%s): %v", winnerName, err)
-		return nil, errors.New("failed to fetch winner from database")
+		return nil, nil, errors.New("failed to fetch winner from database")
 	}
 
 	loser, err := models.GetUserByUsername(loserName)
 	if err != nil || loser == nil {
 		log.Printf("Error fetching loser (%s): %v", loserName, err)
-		return nil, errors.New("failed to fetch loser from database")
+		return nil, nil, errors.New("failed to fetch loser from database")
 	}
 
-	// Calculate ELO changes (modifies user structs in-place)
-	delta := calculateElo(winner, loser)
+	return winner, loser, nil
+}
 
-	// Persist updated ELO and stats to database
+// updatePlayersInDB persists updated ELO and stats to database.
+func updatePlayersInDB(winner, loser *models.User) error {
 	if err := models.UpdateUserEloAndStats(winner); err != nil {
 		log.Println("Failed to update winner ELO:", err)
-		return nil, errors.New("failed to update winner in database")
+		return errors.New("failed to update winner in database")
 	}
 
 	if err := models.UpdateUserEloAndStats(loser); err != nil {
 		log.Println("Failed to update loser ELO:", err)
-		return nil, errors.New("failed to update loser in database")
+		return errors.New("failed to update loser in database")
 	}
 
-	// Record match in history table
-	if err := models.InsertHistory(winner.Username, loser.Username, winner.Username, delta, models.CurrentGame.Ranked); err != nil {
+	return nil
+}
+
+// saveMatchHistory records the match in history table.
+func saveMatchHistory(winnerName, loserName string, delta int) error {
+	if err := models.InsertHistory(winnerName, loserName, winnerName, delta, models.CurrentGame.Ranked); err != nil {
 		log.Println("Failed to insert match history:", err)
-		return nil, errors.New("failed to insert match history")
+		return errors.New("failed to insert match history")
 	}
+	return nil
+}
 
-	// Return the result containing new ELO ratings
+// buildEloResult constructs the ELO result response.
+func buildEloResult(winner, loser *models.User, delta int) *eloResult {
 	return &eloResult{
 		Winner: winner.Username,
 		Delta:  delta,
@@ -117,7 +142,7 @@ func processResult(body *gameResultBody) (*eloResult, error) {
 			winner.Username: winner.Elo,
 			loser.Username:  loser.Elo,
 		},
-	}, nil
+	}
 }
 
 // getResult extracts the winner and loser usernames from the game result.

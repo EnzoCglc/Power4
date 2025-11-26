@@ -41,42 +41,70 @@ func calculateWinRate(wins, losses int) float64 {
 
 // Profil handles the user profile page request, displaying stats and match history.
 func Profil(w http.ResponseWriter, r *http.Request) {
-	// Verify user is logged in by checking for username cookie
-	cookie, err := r.Cookie("username")
+	username, err := getAuthenticatedUsername(r)
 	if err != nil {
-		log.Println("User is not login")
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
-	// Fetch user data from database
-	username := cookie.Value
-	user, err := models.GetUserByUsername(username)
+	user, err := fetchUserProfile(username)
 	if err != nil {
-		log.Println("Error fetching user from database:", err)
-		http.Error(w, "Error loading data", http.StatusInternalServerError)
+		handleProfilError(w, r, err)
 		return
 	}
 
-	// Handle case where user exists in cookie but not in database
-	if user == nil {
-		log.Println("User not exits in database:", username)
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
-		return
-	}
-
-	// Calculate user statistics
-	winRate := calculateWinRate(user.Win, user.Losses)
-	totalGames := user.Win + user.Losses
-
-	// Retrieve match history for this user
 	history, err := models.GetHistoryByPlayer(username)
 	if err != nil {
 		log.Printf("Error to get history for %s : %s", username, err)
 		return
 	}
 
-	// Prepare data for template rendering
+	data := buildProfilData(user, history, r)
+	utils.Render(w, "profil.html", data)
+
+	log.Println("info de l'user ", user, "- WinRate:", data.WinRate, "% - Total games:", data.TotalGames)
+}
+
+// getAuthenticatedUsername retrieves the logged-in username from cookie.
+func getAuthenticatedUsername(r *http.Request) (string, error) {
+	cookie, err := r.Cookie("username")
+	if err != nil {
+		log.Println("User is not login")
+		return "", err
+	}
+	return cookie.Value, nil
+}
+
+// fetchUserProfile retrieves user from database.
+func fetchUserProfile(username string) (*models.User, error) {
+	user, err := models.GetUserByUsername(username)
+	if err != nil {
+		log.Println("Error fetching user from database:", err)
+		return nil, err
+	}
+
+	if user == nil {
+		log.Println("User not exits in database:", username)
+		return nil, http.ErrNoCookie
+	}
+
+	return user, nil
+}
+
+// handleProfilError handles errors during profile loading.
+func handleProfilError(w http.ResponseWriter, r *http.Request, err error) {
+	if err == http.ErrNoCookie {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	} else {
+		http.Error(w, "Error loading data", http.StatusInternalServerError)
+	}
+}
+
+// buildProfilData constructs the profile page data structure.
+func buildProfilData(user *models.User, history []models.History, r *http.Request) ProfilData {
+	winRate := calculateWinRate(user.Win, user.Losses)
+	totalGames := user.Win + user.Losses
+
 	data := ProfilData{
 		User:       user,
 		WinRate:    winRate,
@@ -84,7 +112,6 @@ func Profil(w http.ResponseWriter, r *http.Request) {
 		History:    history,
 	}
 
-	// Extract feedback messages from query parameters (used after redirects)
 	if errorMsg := r.URL.Query().Get("error"); errorMsg != "" {
 		data.ErrorMessage = errorMsg
 	}
@@ -92,8 +119,5 @@ func Profil(w http.ResponseWriter, r *http.Request) {
 		data.SuccessMessage = successMsg
 	}
 
-	// Render the profile page with all user data
-	utils.Render(w, "profil.html", data)
-
-	log.Println("info de l'user ", user, "- WinRate:", winRate, "% - Total games:", totalGames)
+	return data
 }
